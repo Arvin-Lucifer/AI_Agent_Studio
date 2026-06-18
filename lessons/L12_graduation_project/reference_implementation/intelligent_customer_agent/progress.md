@@ -1,0 +1,78 @@
+# Progress
+
+## 2026-06-05
+
+- 阅读资料包：`00_INDEX.md`、`01_ASSIGNMENT_REQUIREMENTS.md`、`02_HARNESS_ENGINEERING_GUIDE.md`、`03_CODEX_TASK_BRIEF.md`、`AGENTS.md` 和 `具体实战参考.docx`。
+- 确认毕业项目实现选题 A：智能客服 Agent。
+- Phase 0：完成项目结构、`requirements.txt`、`init.sh`、`.env.example`、`AGENTS.md`、`feature_list.json`、PRD/TRD/TDD/HARNESS 文档。
+- Phase 1：完成 FastAPI `/health`、`/chat`、统一 Pydantic schema。
+- Phase 2：完成 10 份 Markdown 知识库、`scripts/build_kb.py`、离线关键词 RAG 检索。
+- Phase 3：完成 LangGraph 状态机，显式编排 load memory、intent classify、route、retrieve、answer、evaluate、clarify、ticket、handoff、save memory。
+- Phase 4：完成 session 记忆、投诉工单、无证据兜底、低置信度 guardrails。
+- Phase 5：完成 `evals/eval_dataset.jsonl` 与独立评测脚本 `evals/run_eval.py`。
+- Phase 6：完成 `trace_id`、`logs/events.ndjson`、`logs/metrics.json`、`/metrics`、`/audit/{trace_id}`。
+- Phase 7：完成轻量聊天页 `web/index.html` 和监控页 `web/dashboard.html`。
+- 体验增强：接入可选 grounded LLM 回答；重做聊天页为客服工作台，补齐会话恢复、Enter 发送、发送中状态、引用卡片、工单状态和 trace 展示。
+- 生产闭环增强：新增答案反馈、反馈指标、工单状态更新、近期事件接口，Dashboard 支持工单处理和审计回放。
+- 知识缺口增强：新增 `data/knowledge_gaps.jsonl`、`/knowledge-gaps`、`/knowledge-gaps/stats` 和状态更新 API，低置信度转人工与差评自动沉淀为缺口。
+- 知识库运营增强：新增 `/kb/docs`、`/kb/rebuild` 和 Dashboard 新知识文档创建区，可从 knowledge gap 生成草稿并重建索引。
+- 部署运维增强：新增 Dockerfile、docker-compose、Makefile、entrypoint 和部署测试，容器启动会自动构建 KB 索引并暴露 `/health` 健康检查。
+- Docker 验证：`docker compose config` 通过且不会暴露 `.env` 密钥；`docker compose build` 在当前机器因 Docker daemon 代理 `127.0.0.1:11451` 未运行而无法拉取 `python:3.11-slim`，已在 README 写入排障说明。
+- 安全边界增强：新增可选 Admin Key 保护管理写接口、`/chat` 基础限流、Dashboard Admin Key 输入和前端脚本语法测试。
+- 安全验证：Admin Key 保护测试通过，Dashboard JS 在当前 Node 上语法检查通过，`docker compose config` 不暴露 `.env` 密钥。
+- 智能工单增强：新增订单号、联系方式掩码、问题类型、紧急程度、优先级和 SLA 抽取，并在 Dashboard 工单卡片展示。
+- 智能工单冒烟：投诉消息中的 `ORD202606050001` 和手机号被正确抽取为 `order_id` 与 `138****5678`，优先级 high，SLA 4h。
+- 多轮工单补充增强：新增 `maybe_update_ticket` 节点，同一 session 后续补充订单号/联系方式会更新原工单并记录 `ticket.enriched`。
+- 多轮工单补充冒烟：同一 session 后续补充 `ORD202606050099` 和手机号，系统更新原工单并返回 `ticket_enriched=true`。
+- SLA 监控增强：工单自动计算 `due_at`、`minutes_to_due` 和 `overdue`，Dashboard 高亮超时工单，`/tickets/stats` 返回 overdue 数。
+- SLA 监控冒烟：`/tickets/stats` 返回 overdue 字段，`/tickets` 返回 `due_at` 与 `minutes_to_due`，Dashboard 包含 Overdue 高亮逻辑。
+- 质量门禁增强：新增 `/eval/report`、`/eval/run` 和 Dashboard Quality Gate，可展示 overall_score、各项准确率、失败用例，并通过 Admin Key 触发独立评测。
+- 评测环境隔离：`evals/run_eval.py` 改为仅在评测运行期间临时关闭 LLM 回答，结束后恢复原 `USE_LLM_ANSWERS`，避免导入评测模块污染线上服务。
+- 测试稳定性增强：当前环境的 `fastapi.testclient.TestClient` 会阻塞，API 测试改为直接调用路由函数与核心工具，真实 HTTP 行为保留给 uvicorn 冒烟验证。
+- 启动稳定性增强：`scripts/run_api.sh` 默认只 reload `intelligent_customer/` 和 `web/`，避免测试、评测、日志和运行期数据写入触发演示服务反复重启。
+- 并发持久化增强：新增 `harness/file_lock.py`，为 memory、tickets、knowledge gaps、events 和 metrics 的本地 JSON/JSONL 读写增加 sidecar 文件锁。
+- 并发持久化验证：新增 `tests/test_persistence.py`，覆盖并发 session 记忆写入、工单追加、knowledge gap 合并和 metrics 计数更新。
+- 上下文追问增强：新增 `tools/context_tool.py`，短追问会根据 session history 改写检索查询，并在回复 metadata 中返回 `suggested_actions`。
+- 前端连续对话增强：聊天页展示下一步快捷动作，点击后自动填入并发送，历史恢复时也保留建议动作。
+- 隐私脱敏增强：新增 `harness/privacy.py`，审计事件、工单正文和工单备注会自动遮罩手机号、邮箱和长数字凭证，保留 `contact_masked` 字段供客服处理。
+- 聊天内工单状态增强：新增 `maybe_ticket_status` 节点，用户可问“查看工单状态”或提供工单号查询进度，系统返回状态、SLA、负责人和缺失字段提示。
+- 工单状态意图边界修正：避免把“查询订单状态”误判为“查询工单状态”，确保订单 FAQ 仍走 RAG。
+- 人工接手摘要增强：新增 `tools/handoff_tool.py`，工单 metadata 自动包含当前问题摘要、最近对话、证据来源、缺失字段和下一步建议，Dashboard 工单卡片展示接手摘要。
+- Session Insight UI 增强：聊天页新增右侧 Insight 面板，持续展示意图、路由、置信度、证据数、工单号、上下文查询、引用来源和建议动作，移动端自动隐藏。
+- 证据片段引用增强：`Citation` schema 新增 `snippet` 字段，RAG 引用卡片展示命中的知识库摘录，并对片段做基础隐私脱敏。
+- 缺口转评测增强：新增 `/knowledge-gaps/{gap_id}/eval-case` 和 `/eval/generated-cases`，Dashboard Knowledge Gaps 面板支持一键“转评测”，草稿写入 `evals/generated_eval_cases.jsonl`。
+- RAG 检索调试增强：新增 `/kb/search` 和 Dashboard Search Lab，支持按 collection 过滤并展示命中文档、分数、source_id、path 和证据片段。
+- 客服台状态体验增强：聊天页新增消息时间、响应耗时持久化、健康状态轮询，并避免中文输入法组合状态下 Enter 误发送。
+- 口语理解增强：新增 `rag/query_normalizer.py`，把“退钱、短信码、开票、一直转圈、看不到报表”等真实用户说法映射到退款、验证码、发票、登录故障和权限报表等知识库概念。
+- 操作恢复增强：聊天页新增失败重试、复制 trace/工单号和带原因的差评反馈，提升演示和运营时的问题追踪效率。
+- 视觉体验增强：聊天页新增用户/AI 身份头像、intent/route 状态色 chip、输入焦点态和发送处理中状态，减少单调灰盒感。
+- 会话状态增强：`/sessions` 增加业务标题、更新时间、最后 intent/route、工单号和人工状态，聊天页侧边栏展示持久状态快照。
+- 会话队列增强：聊天页侧边栏新增关键词搜索和按待人工、有工单、RAG 已回答、需澄清筛选，支持多会话运营。
+- 答案相关性增强：抽取式回答不再简单取文档前几句，而是按用户问题对证据句排序，优先返回同时命中核心业务词、时效条件和处理动作的句子。
+
+## Verification
+
+- `bash init.sh`：通过，复用 conda 环境 `agent_course` 并安装依赖。
+- `python scripts/build_kb.py`：通过，构建 10 份文档索引。
+- `pytest -q`：通过，63 passed。
+- `python evals/run_eval.py`：通过，32 cases，overall_score = 1.0。
+- `uvicorn intelligent_customer.api:app --host 0.0.0.0 --port 8011 --reload`：通过，`/health` 和 `/chat` 均返回 200。
+- 生产化冒烟：`/feedback`、`/tickets/stats`、`/events/recent`、Dashboard 页面均可用。
+- 知识缺口冒烟：`/knowledge-gaps`、`/knowledge-gaps/stats` 和 Dashboard Knowledge Gaps 面板均可用。
+- 知识库运营冒烟：`/kb/docs` 返回 10 份基础文档，`/kb/rebuild` 返回 doc_count 10，Dashboard Knowledge Base/New Article 区域可用。
+- 质量门禁冒烟：`python evals/run_eval.py` 写入 `evals/eval_report.json`，Dashboard JS 语法检查通过并包含 Quality Gate 渲染逻辑。
+- 上下文追问冒烟：`tests/test_graph.py` 覆盖“专业版和企业版有什么区别？”后追问“那 SLA 呢？”，`query_rewritten=true` 且命中 SLA 答案。
+- 隐私脱敏冒烟：`tests/test_privacy.py` 覆盖日志事件递归脱敏、工单 message/notes 脱敏和 `contact_masked` 保留。
+- 工单状态冒烟：`tests/test_graph.py` 覆盖当前 session 工单状态查询和显式工单号查询，`evals/run_eval.py` 新增投诉后查看工单状态 case。
+- 人工接手摘要冒烟：`tests/test_handoff.py` 覆盖摘要上下文、证据、缺失字段、PII 脱敏和下一步建议。
+- Session Insight 冒烟：`tests/test_security.py` 现在同时检查 `web/index.html` 与 `web/dashboard.html` 的前端脚本语法。
+- 证据片段引用冒烟：`tests/test_api.py` 校验 `/chat` 返回的 citations 包含 snippet，前端 source card 展示片段。
+- 缺口转评测冒烟：`tests/test_api.py::test_knowledge_gap_can_generate_eval_case` 覆盖差评生成 gap、gap 生成评测草稿、PII 脱敏和 `/eval/generated-cases` 列表。
+- RAG 检索调试冒烟：`tests/test_api.py::test_kb_search_endpoint_returns_debug_results` 覆盖 `/kb/search` 返回排序结果、分数和证据片段，Dashboard JS 语法检查通过。
+- 客服台状态体验冒烟：`tests/test_api.py::test_chat_returns_uniform_schema` 覆盖响应耗时写入会话记忆，`tests/test_security.py` 覆盖聊天页脚本语法。
+- 口语理解冒烟：`tests/test_graph.py` 覆盖“钱什么时候能退回来”“短信码一直收不到”“开票抬头填错了怎么改”，评测集新增 5 条口语 case 后保持 overall_score 1.0。
+- 操作恢复冒烟：`tests/test_security.py::test_chat_frontend_keeps_operational_controls` 覆盖失败重试、复制和差评原因入口，前端脚本语法检查通过。
+- 视觉体验冒烟：`tests/test_security.py::test_chat_frontend_has_polished_status_visuals` 覆盖头像、状态色、输入焦点态和发送处理中状态，前端脚本语法检查通过。
+- 会话状态冒烟：`tests/test_api.py::test_sessions_include_persistent_status_snapshot` 覆盖 session 快照状态和脱敏，`tests/test_security.py::test_chat_frontend_renders_session_snapshots` 覆盖侧边栏渲染入口。
+- 会话队列冒烟：`tests/test_security.py::test_chat_frontend_filters_session_queue` 覆盖会话搜索、状态筛选和空状态入口，前端脚本语法检查通过。
+- 答案相关性冒烟：`tests/test_graph.py::test_answer_prioritizes_relevant_sentences_within_retrieved_docs` 覆盖“团队成员看不到报表”优先返回报表/权限句，同时回归退款到账和验证码安全限制句，评测集新增 1 条 case 后保持 overall_score 1.0。

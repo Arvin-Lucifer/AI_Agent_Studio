@@ -1,0 +1,25 @@
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+.ipynb_checkpoints/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+use_proxy.sh
+unset_proxy.sh
+
+# Course generated indexes and runtime artifacts
+lessons/*/data/rag_index/
+lessons/L12_graduation_project/reference_implementation/intelligent_customer_agent/data/kb_index.json
+lessons/L12_graduation_project/reference_implementation/intelligent_customer_agent/data/memory.json
+lessons/L12_graduation_project/reference_implementation/intelligent_customer_agent/data/tickets.jsonl
+lessons/L12_graduation_project/reference_implementation/intelligent_customer_agent/data/knowledge_gaps.jsonl
+lessons/L12_graduation_project/reference_implementation/intelligent_customer_agent/data/*.lock
+lessons/L12_graduation_project/reference_implementation/intelligent_customer_agent/logs/*
+lessons/L12_graduation_project/reference_implementation/intelligent_customer_agent/evals/generated_eval_cases.jsonl
+lessons/L12_graduation_project/reference_implementation/intelligent_customer_agent/evals/*.lock
+
+# Local generated notebooks/checkpoints
+shared/notebooks/.ipynb_checkpoints/

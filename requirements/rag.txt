@@ -1,0 +1,10 @@
+numpy
+pandas
+scikit-learn
+tiktoken
+pypdf
+rank-bm25
+faiss-cpu
+chromadb
+langchain-text-splitters
+langchain-chroma

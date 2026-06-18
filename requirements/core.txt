@@ -1,0 +1,12 @@
+openai
+python-dotenv
+rich
+pydantic
+pyyaml
+httpx
+tqdm
+jupyterlab
+ipykernel
+pytest
+fastapi
+uvicorn

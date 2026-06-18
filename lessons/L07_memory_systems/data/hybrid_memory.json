@@ -1,0 +1,75 @@
+{
+  "user_profile": {
+    "name": {
+      "value": "小明",
+      "updated_at": "2026-06-18T18:14:00"
+    },
+    "role": {
+      "value": "后端工程师",
+      "updated_at": "2026-06-18T18:14:00"
+    }
+  },
+  "facts": [
+    {
+      "id": "b8350795-260d-4ff4-8fde-f214638e8b3a",
+      "content": "小明 负责 用户中心项目",
+      "category": "kg_triple",
+      "importance": 7,
+      "created_at": "2026-06-18T18:14:00",
+      "last_access": null,
+      "access_count": 0,
+      "expire_at": null
+    },
+    {
+      "id": "e0eae09c-244f-45a0-8fc7-c47b73b208ed",
+      "content": "小明 属于 团队A",
+      "category": "kg_triple",
+      "importance": 7,
+      "created_at": "2026-06-18T18:14:00",
+      "last_access": null,
+      "access_count": 0,
+      "expire_at": null
+    },
+    {
+      "id": "4ceb6450-a270-4f0b-a550-617ab9e7e918",
+      "content": "用户中心项目 使用 FastAPI",
+      "category": "kg_triple",
+      "importance": 7,
+      "created_at": "2026-06-18T18:14:00",
+      "last_access": null,
+      "access_count": 0,
+      "expire_at": null
+    },
+    {
+      "id": "a2ba5e46-38c1-4240-9be8-6ef0024ec20d",
+      "content": "FastAPI 属于类型 Web 框架",
+      "category": "kg_triple",
+      "importance": 7,
+      "created_at": "2026-06-18T18:14:00",
+      "last_access": null,
+      "access_count": 0,
+      "expire_at": null
+    }
+  ],
+  "preferences": [
+    {
+      "id": "ec8cdb75-4942-4f07-a377-4cf00712a69d",
+      "key": "编程语言",
+      "value": "喜欢用 Python",
+      "importance": 8,
+      "created_at": "2026-06-18T18:14:00",
+      "last_access": null,
+      "access_count": 0
+    },
+    {
+      "id": "b4e01e32-c7da-4027-aba4-c02cfb06362c",
+      "key": "回答风格",
+      "value": "喜欢简洁的回答，带代码示例",
+      "importance": 7,
+      "created_at": "2026-06-18T18:14:00",
+      "last_access": null,
+      "access_count": 0
+    }
+  ],
+  "deleted": []
+}

@@ -1,0 +1,55 @@
+{
+  "user_profile": {
+    "name": {
+      "value": "小明",
+      "updated_at": "2026-06-18T18:13:59"
+    },
+    "role": {
+      "value": "后端工程师",
+      "updated_at": "2026-06-18T18:13:59"
+    }
+  },
+  "facts": [
+    {
+      "id": "b629073a-0e48-484b-9acd-6a2d41ec50a4",
+      "content": "小明负责用户中心项目",
+      "category": "work",
+      "importance": 8,
+      "created_at": "2026-06-18T18:13:59",
+      "last_access": null,
+      "access_count": 0,
+      "expire_at": null
+    },
+    {
+      "id": "4f70b856-a862-4dac-94e0-d380f4d301c6",
+      "content": "团队用 FastAPI 做后端",
+      "category": "tech",
+      "importance": 7,
+      "created_at": "2026-06-18T18:13:59",
+      "last_access": null,
+      "access_count": 0,
+      "expire_at": null
+    }
+  ],
+  "preferences": [
+    {
+      "id": "7d9240bf-b540-4780-9151-1cbf76f3bbd4",
+      "key": "编程语言",
+      "value": "喜欢用 Python",
+      "importance": 8,
+      "created_at": "2026-06-18T18:13:59",
+      "last_access": "2026-06-18T18:13:59",
+      "access_count": 1
+    },
+    {
+      "id": "1c19c319-8b56-4b1a-9dda-f757106d08dc",
+      "key": "回答风格",
+      "value": "喜欢简洁的回答，带代码示例",
+      "importance": 7,
+      "created_at": "2026-06-18T18:13:59",
+      "last_access": null,
+      "access_count": 0
+    }
+  ],
+  "deleted": []
+}

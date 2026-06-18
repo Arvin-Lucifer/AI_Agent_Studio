@@ -1,0 +1,853 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent Dashboard</title>
+  <style>
+    :root {
+      --ink: #18212b;
+      --muted: #617182;
+      --line: #dce5ec;
+      --line-strong: #b7c7d1;
+      --bg: #f5f8fa;
+      --panel: #ffffff;
+      --accent: #176b73;
+      --accent-dark: #0f5157;
+      --danger: #ad3f3f;
+      --success: #26745d;
+      --warn: #8f623d;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+    }
+    header {
+      height: 68px;
+      padding: 0 28px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    h1 { margin: 0; font-size: 22px; letter-spacing: 0; }
+    a, button {
+      font: inherit;
+      border-radius: 8px;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      padding: 7px 10px;
+      background: #fbfcfd;
+    }
+    header input {
+      width: 180px;
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 7px 10px;
+      font: inherit;
+      background: #fbfcfd;
+    }
+    button {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--ink);
+      cursor: pointer;
+      min-height: 32px;
+      padding: 5px 10px;
+    }
+    button:hover { border-color: var(--line-strong); }
+    main {
+      padding: 22px 28px 28px;
+      display: grid;
+      gap: 16px;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+    .quality {
+      display: grid;
+      grid-template-columns: minmax(280px, .9fr) minmax(360px, 1.1fr);
+      gap: 16px;
+    }
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 13px;
+      min-height: 88px;
+    }
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    .metric strong {
+      font-size: 26px;
+      letter-spacing: 0;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(320px, 1fr) minmax(320px, 1fr) minmax(320px, .9fr);
+      gap: 16px;
+    }
+    .kb-layout {
+      display: grid;
+      grid-template-columns: minmax(320px, .9fr) minmax(360px, 1.1fr);
+      gap: 16px;
+    }
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      min-width: 0;
+      overflow: hidden;
+    }
+    .panel-head {
+      min-height: 50px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .panel-head h2 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+    .list {
+      display: grid;
+      align-content: start;
+      max-height: 520px;
+      overflow: auto;
+    }
+    .row {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      gap: 8px;
+    }
+    .row:last-child { border-bottom: 0; }
+    .row-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+    .row-title strong {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .message {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+    .quality-summary {
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .score-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .score {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+    .score.ok { color: var(--success); }
+    .score.warn { color: var(--warn); }
+    .score.bad { color: var(--danger); }
+    .quality-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 8px;
+    }
+    .quality-item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 9px 10px;
+      background: #fbfcfd;
+    }
+    .quality-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .quality-item strong {
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+    .eval-case.fail {
+      border-left: 4px solid var(--danger);
+      background: #fffafa;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .chip {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 2px 8px;
+      background: #fbfcfd;
+    }
+    .chip.open { color: var(--danger); border-color: #e1b9b9; }
+    .chip.in_progress { color: var(--warn); border-color: #dcc5ae; }
+    .chip.resolved, .chip.closed { color: var(--success); border-color: #b9d7cc; }
+    .chip.overdue { color: var(--danger); border-color: #e1b9b9; background: #fff7f7; }
+    .row.overdue {
+      border-left: 4px solid var(--danger);
+      background: #fffafa;
+    }
+    .row-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .audit-tools {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    input, select, textarea {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font: inherit;
+      background: #fbfcfd;
+    }
+    textarea {
+      min-height: 180px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+    .kb-form {
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+    .kb-search-tools {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 150px;
+      gap: 8px;
+    }
+    .kb-form-row {
+      display: grid;
+      grid-template-columns: 1fr 150px;
+      gap: 8px;
+    }
+    pre {
+      margin: 0;
+      padding: 14px;
+      min-height: 260px;
+      max-height: 520px;
+      overflow: auto;
+      background: #101820;
+      color: #eaf3f5;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    @media (max-width: 940px) {
+      header { height: auto; min-height: 64px; padding: 14px; }
+      main { padding: 14px; }
+      .quality { grid-template-columns: 1fr; }
+      .layout { grid-template-columns: 1fr; }
+      .kb-layout { grid-template-columns: 1fr; }
+      .kb-search-tools { grid-template-columns: 1fr; }
+      .kb-form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Agent Dashboard</h1>
+    <div>
+      <input id="adminKey" placeholder="Admin Key">
+      <a href="/">Chat</a>
+      <a href="/docs">API Docs</a>
+    </div>
+  </header>
+  <main>
+    <section class="metrics" id="cards"></section>
+    <section class="quality">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Quality Gate</h2>
+          <button id="runEval">运行评测</button>
+        </div>
+        <div class="quality-summary" id="evalSummary"></div>
+      </article>
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Eval Cases</h2>
+          <button id="refreshEval">刷新</button>
+        </div>
+        <div class="list" id="evalCases"></div>
+      </article>
+    </section>
+    <section class="layout">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Tickets</h2>
+          <button id="refresh">刷新</button>
+        </div>
+        <div class="list" id="tickets"></div>
+      </article>
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Knowledge Gaps</h2>
+          <button id="refreshGaps">刷新</button>
+        </div>
+        <div class="list" id="gaps"></div>
+      </article>
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Audit</h2>
+          <button id="loadEvents">事件流</button>
+        </div>
+        <div class="audit-tools">
+          <input id="traceInput" placeholder="trace_id">
+          <button id="loadAudit">回放</button>
+        </div>
+        <pre id="audit">{}</pre>
+      </article>
+    </section>
+    <section class="kb-layout">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Knowledge Base</h2>
+          <button id="rebuildKb">重建索引</button>
+        </div>
+        <div class="list" id="docs"></div>
+      </article>
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Search Lab</h2>
+          <button id="searchKb">检索</button>
+        </div>
+        <div class="kb-search-tools">
+          <input id="kbSearchQuery" placeholder="输入用户问题或关键词">
+          <select id="kbSearchCollection">
+            <option value="">auto</option>
+            <option value="faq">faq</option>
+            <option value="policy">policy</option>
+            <option value="manual">manual</option>
+            <option value="troubleshoot">troubleshoot</option>
+            <option value="product">product</option>
+          </select>
+        </div>
+        <div class="list" id="kbSearchResults">
+          <div class="row"><div class="message">输入问题后查看 RAG 命中的文档、分数和证据片段。</div></div>
+        </div>
+      </article>
+      <article class="panel">
+        <div class="panel-head">
+          <h2>New Article</h2>
+          <button id="createDoc">创建</button>
+        </div>
+        <div class="kb-form">
+          <div class="kb-form-row">
+            <input id="docTitle" placeholder="标题">
+            <select id="docCollection">
+              <option value="faq">faq</option>
+              <option value="policy">policy</option>
+              <option value="manual">manual</option>
+              <option value="troubleshoot">troubleshoot</option>
+              <option value="product">product</option>
+            </select>
+          </div>
+          <input id="docGapId" placeholder="关联 gap_id，可选">
+          <textarea id="docContent" placeholder="输入知识库正文"></textarea>
+        </div>
+      </article>
+    </section>
+  </main>
+  <script>
+    const cards = document.querySelector("#cards");
+    const evalSummary = document.querySelector("#evalSummary");
+    const evalCasesRoot = document.querySelector("#evalCases");
+    const runEvalButton = document.querySelector("#runEval");
+    const ticketsRoot = document.querySelector("#tickets");
+    const gapsRoot = document.querySelector("#gaps");
+    const docsRoot = document.querySelector("#docs");
+    const kbSearchResultsRoot = document.querySelector("#kbSearchResults");
+    const auditRoot = document.querySelector("#audit");
+    const traceInput = document.querySelector("#traceInput");
+    const adminKeyInput = document.querySelector("#adminKey");
+    const docTitle = document.querySelector("#docTitle");
+    const docCollection = document.querySelector("#docCollection");
+    const docGapId = document.querySelector("#docGapId");
+    const docContent = document.querySelector("#docContent");
+    const kbSearchQuery = document.querySelector("#kbSearchQuery");
+    const kbSearchCollection = document.querySelector("#kbSearchCollection");
+    const searchKbButton = document.querySelector("#searchKb");
+
+    function escapeHtml(text) {
+      return String(text == null ? "" : text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function renderJson(value) {
+      auditRoot.textContent = JSON.stringify(value, null, 2);
+    }
+
+    function formatPercent(value) {
+      const number = Number(value);
+      if (!Number.isFinite(number)) return "-";
+      return `${Math.round(number * 100)}%`;
+    }
+
+    function scoreClass(value) {
+      const number = Number(value);
+      if (number >= 0.95) return "ok";
+      if (number >= 0.85) return "warn";
+      return "bad";
+    }
+
+    function casePassed(item) {
+      const checks = Object.values(item.checks || {});
+      return checks.length > 0 && checks.every(Boolean);
+    }
+
+    function failedChecks(item) {
+      return Object.entries(item.checks || {})
+        .filter(([, value]) => !value)
+        .map(([key]) => key);
+    }
+
+    function adminHeaders(contentType = true) {
+      const headers = {};
+      if (contentType) headers["Content-Type"] = "application/json";
+      const key = adminKeyInput.value.trim();
+      if (key) headers["X-Admin-Key"] = key;
+      return headers;
+    }
+
+    async function loadMetrics() {
+      const [metricsResponse, ticketStatsResponse, gapStatsResponse] = await Promise.all([
+        fetch("/metrics"),
+        fetch("/tickets/stats"),
+        fetch("/knowledge-gaps/stats")
+      ]);
+      const data = await metricsResponse.json();
+      const ticketStats = await ticketStatsResponse.json();
+      const gapStats = await gapStatsResponse.json();
+      const items = [
+        ["Total", data.total_requests],
+        ["Open", ticketStats.open],
+        ["In Progress", ticketStats.in_progress],
+        ["Overdue", ticketStats.overdue],
+        ["Resolved", ticketStats.resolved],
+        ["Open Gaps", gapStats.open],
+        ["Fallback", data.fallback_rate],
+        ["Clarify", data.clarification_rate],
+        ["Feedback", data.feedback_count],
+        ["P95 ms", data.p95_latency_ms]
+      ];
+      cards.innerHTML = items.map(([label, value]) => `
+        <div class="metric"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value == null ? 0 : value)}</strong></div>
+      `).join("");
+    }
+
+    function renderEvalReport(payload) {
+      if (!payload || payload.status === "missing") {
+        evalSummary.innerHTML = `
+          <div class="score-line">
+            <div>
+              <div class="message">尚未生成评测报告</div>
+              <strong>运行一次评测后会在这里显示质量门禁。</strong>
+            </div>
+            <div class="score bad">-</div>
+          </div>
+        `;
+        evalCasesRoot.innerHTML = `<div class="row"><div class="message">暂无评测用例结果</div></div>`;
+        return;
+      }
+      const metrics = payload.metrics || {};
+      const score = Number(metrics.overall_score || 0);
+      const generatedAt = payload.generated_at ? new Date(payload.generated_at).toLocaleString() : "-";
+      const items = [
+        ["Intent", metrics.intent_accuracy],
+        ["Route", metrics.route_accuracy],
+        ["Ticket", metrics.ticket_success_rate],
+        ["Fallback", metrics.fallback_accuracy],
+        ["Clarify", metrics.clarification_accuracy],
+        ["Keyword", metrics.keyword_hit_rate],
+        ["Schema", metrics.schema_valid_rate]
+      ];
+      evalSummary.innerHTML = `
+        <div class="score-line">
+          <div>
+            <div class="message">${escapeHtml(payload.report_path)} · ${escapeHtml(generatedAt)}</div>
+            <strong>${escapeHtml(metrics.total || payload.dataset_cases || 0)} cases · ${escapeHtml(payload.failure_count || 0)} failures</strong>
+          </div>
+          <div class="score ${scoreClass(score)}">${escapeHtml(formatPercent(score))}</div>
+        </div>
+        <div class="quality-grid">
+          ${items.map(([label, value]) => `
+            <div class="quality-item"><span>${escapeHtml(label)}</span><strong>${escapeHtml(formatPercent(value))}</strong></div>
+          `).join("")}
+        </div>
+      `;
+      const cases = [...(payload.results || [])].sort((left, right) => Number(casePassed(left)) - Number(casePassed(right)));
+      evalCasesRoot.innerHTML = cases.length ? "" : `<div class="row"><div class="message">暂无评测用例结果</div></div>`;
+      for (const item of cases.slice(0, 16)) {
+        const passed = casePassed(item);
+        const failures = failedChecks(item);
+        const node = document.createElement("div");
+        node.className = `row eval-case ${passed ? "pass" : "fail"}`;
+        node.innerHTML = `
+          <div class="row-title">
+            <strong>${escapeHtml(item.id)}</strong>
+            <span class="chip ${passed ? "resolved" : "open"}">${passed ? "pass" : "fail"}</span>
+          </div>
+          <div class="chips">
+            <span class="chip">${escapeHtml(item.intent)}</span>
+            <span class="chip">${escapeHtml(item.route)}</span>
+            <span class="chip">confidence ${escapeHtml(item.confidence)}</span>
+            ${failures.length ? `<span class="chip open">failed ${escapeHtml(failures.join(","))}</span>` : ""}
+          </div>
+        `;
+        evalCasesRoot.appendChild(node);
+      }
+    }
+
+    async function loadEvalReport() {
+      const response = await fetch("/eval/report");
+      if (!response.ok) {
+        renderEvalReport({status: "missing"});
+        return;
+      }
+      renderEvalReport(await response.json());
+    }
+
+    async function runEval() {
+      runEvalButton.disabled = true;
+      runEvalButton.textContent = "评测中";
+      try {
+        const response = await fetch("/eval/run", {method: "POST", headers: adminHeaders(false)});
+        const payload = await response.json();
+        if (!response.ok) {
+          renderJson(payload);
+          return;
+        }
+        renderEvalReport(payload);
+        renderJson({status: "eval completed", metrics: payload.metrics, failure_count: payload.failure_count});
+        await loadMetrics();
+      } finally {
+        runEvalButton.disabled = false;
+        runEvalButton.textContent = "运行评测";
+      }
+    }
+
+    async function loadTickets() {
+      const response = await fetch("/tickets?limit=80");
+      const payload = await response.json();
+      const tickets = payload.tickets || [];
+      ticketsRoot.innerHTML = tickets.length ? "" : `<div class="row"><div class="message">暂无工单</div></div>`;
+      for (const ticket of tickets) {
+        const node = document.createElement("div");
+        node.className = `row ${ticket.overdue ? "overdue" : ""}`;
+        const dueLabel = ticket.overdue ? "overdue" : `due ${ticket.minutes_to_due == null ? "-" : `${ticket.minutes_to_due}m`}`;
+        node.innerHTML = `
+          <div class="row-title">
+            <strong>${escapeHtml(ticket.ticket_id)}</strong>
+            <span class="chip ${escapeHtml(ticket.status)}">${escapeHtml(ticket.status)}</span>
+          </div>
+          <div class="message">${escapeHtml(ticket.message || "")}</div>
+          ${ticket.metadata && ticket.metadata.handoff ? `<div class="message"><strong>接手摘要：</strong>${escapeHtml(ticket.metadata.handoff.summary || "")}</div>` : ""}
+          <div class="chips">
+            <span class="chip">${escapeHtml(ticket.category)}</span>
+            <span class="chip">${escapeHtml(ticket.priority)}</span>
+            <span class="chip">${escapeHtml(ticket.issue_type)}</span>
+            <span class="chip">SLA ${escapeHtml(ticket.sla_hours)}h</span>
+            <span class="chip ${ticket.overdue ? "overdue" : ""}">${escapeHtml(dueLabel)}</span>
+            ${ticket.metadata && ticket.metadata.missing_fields && ticket.metadata.missing_fields.length ? `<span class="chip">missing ${escapeHtml(ticket.metadata.missing_fields.join(","))}</span>` : ""}
+            ${ticket.metadata && ticket.metadata.handoff && ticket.metadata.handoff.next_steps ? `<span class="chip">next ${escapeHtml(ticket.metadata.handoff.next_steps[0] || "-")}</span>` : ""}
+            ${ticket.order_id ? `<span class="chip">order ${escapeHtml(ticket.order_id)}</span>` : ""}
+            ${ticket.contact_masked ? `<span class="chip">${escapeHtml(ticket.contact_masked)}</span>` : ""}
+            ${ticket.assignee ? `<span class="chip">${escapeHtml(ticket.assignee)}</span>` : ""}
+          </div>
+          <div class="row-actions">
+            <button data-status="in_progress">处理中</button>
+            <button data-status="resolved">已解决</button>
+            <button data-audit="${escapeHtml(ticket.trace_id || "")}">审计</button>
+          </div>
+        `;
+        node.querySelectorAll("[data-status]").forEach(button => {
+          button.addEventListener("click", () => updateTicket(ticket.ticket_id, button.dataset.status));
+        });
+        node.querySelector("[data-audit]").addEventListener("click", () => {
+          traceInput.value = ticket.trace_id || "";
+          loadAudit();
+        });
+        ticketsRoot.appendChild(node);
+      }
+    }
+
+    async function loadGaps() {
+      const response = await fetch("/knowledge-gaps?limit=80");
+      const payload = await response.json();
+      const gaps = payload.gaps || [];
+      gapsRoot.innerHTML = gaps.length ? "" : `<div class="row"><div class="message">暂无知识缺口</div></div>`;
+      for (const gap of gaps) {
+        const traceIds = gap.trace_ids || [];
+        const traceId = traceIds.length ? traceIds[traceIds.length - 1] : "";
+        const node = document.createElement("div");
+        node.className = "row";
+        node.innerHTML = `
+          <div class="row-title">
+            <strong>${escapeHtml(gap.gap_id)}</strong>
+            <span class="chip ${escapeHtml(gap.status)}">${escapeHtml(gap.status)}</span>
+          </div>
+          <div class="message">${escapeHtml(gap.last_message || gap.message || "")}</div>
+          <div class="chips">
+            <span class="chip">${escapeHtml(gap.reason)}</span>
+            <span class="chip">count ${escapeHtml(gap.count)}</span>
+            <span class="chip">${escapeHtml(gap.priority)}</span>
+          </div>
+          <div class="row-actions">
+            <button data-gap-status="reviewing">评审中</button>
+            <button data-gap-status="closed">关闭</button>
+            <button data-gap-draft="${escapeHtml(gap.gap_id)}">转知识</button>
+            <button data-gap-eval="${escapeHtml(gap.gap_id)}">转评测</button>
+            <button data-gap-audit="${escapeHtml(traceId)}">审计</button>
+          </div>
+        `;
+        node.querySelectorAll("[data-gap-status]").forEach(button => {
+          button.addEventListener("click", () => updateGap(gap.gap_id, button.dataset.gapStatus));
+        });
+        node.querySelector("[data-gap-audit]").addEventListener("click", () => {
+          traceInput.value = traceId;
+          loadAudit();
+        });
+        node.querySelector("[data-gap-draft]").addEventListener("click", () => {
+          docTitle.value = `补充知识：${(gap.last_message || gap.message || "").slice(0, 28)}`;
+          docCollection.value = gap.reason === "needs_human" ? "faq" : "manual";
+          docGapId.value = gap.gap_id;
+          docContent.value = [
+            `# ${docTitle.value}`,
+            "",
+            "## 适用场景",
+            gap.last_message || gap.message || "",
+            "",
+            "## 标准处理方式",
+            "请在这里补充经过人工确认的标准答案、处理条件、所需材料和升级路径。",
+            "",
+            "## 注意事项",
+            "答案必须基于已确认政策或服务范围，不能承诺未验证事项。"
+          ].join("\n");
+          docTitle.focus();
+        });
+        node.querySelector("[data-gap-eval]").addEventListener("click", () => createEvalCase(gap.gap_id));
+        gapsRoot.appendChild(node);
+      }
+    }
+
+    async function updateGap(gapId, status) {
+      await fetch(`/knowledge-gaps/${encodeURIComponent(gapId)}`, {
+        method: "PATCH",
+        headers: adminHeaders(),
+        body: JSON.stringify({status, note: `dashboard -> ${status}`})
+      });
+      await refreshAll();
+    }
+
+    async function createEvalCase(gapId) {
+      const response = await fetch(`/knowledge-gaps/${encodeURIComponent(gapId)}/eval-case`, {
+        method: "POST",
+        headers: adminHeaders(false)
+      });
+      const payload = await response.json();
+      renderJson(payload);
+      if (!response.ok) return;
+      await loadEvalReport();
+    }
+
+    async function loadDocs() {
+      const response = await fetch("/kb/docs");
+      const payload = await response.json();
+      const docs = payload.documents || [];
+      docsRoot.innerHTML = docs.length ? "" : `<div class="row"><div class="message">暂无知识文档</div></div>`;
+      for (const doc of docs) {
+        const node = document.createElement("div");
+        node.className = "row";
+        node.innerHTML = `
+          <div class="row-title">
+            <strong>${escapeHtml(doc.title)}</strong>
+            <span class="chip">${escapeHtml(doc.collection)}</span>
+          </div>
+          <div class="message">${escapeHtml(doc.source_id)} · ${escapeHtml(doc.updated_at)} · ${escapeHtml(doc.char_count)} chars</div>
+        `;
+        docsRoot.appendChild(node);
+      }
+    }
+
+    async function searchKb() {
+      const query = kbSearchQuery.value.trim();
+      if (!query) {
+        kbSearchResultsRoot.innerHTML = `<div class="row"><div class="message">请输入要诊断的用户问题。</div></div>`;
+        return;
+      }
+      searchKbButton.disabled = true;
+      searchKbButton.textContent = "检索中";
+      try {
+        const params = new URLSearchParams({q: query, k: "8"});
+        if (kbSearchCollection.value) params.set("collection", kbSearchCollection.value);
+        const response = await fetch(`/kb/search?${params.toString()}`);
+        const payload = await response.json();
+        if (!response.ok) {
+          kbSearchResultsRoot.innerHTML = `<div class="row"><div class="message">${escapeHtml(payload.detail || "检索失败")}</div></div>`;
+          renderJson(payload);
+          return;
+        }
+        const results = payload.results || [];
+        kbSearchResultsRoot.innerHTML = results.length ? "" : `<div class="row"><div class="message">没有命中知识库内容，建议转为 knowledge gap 或补充知识。</div></div>`;
+        for (const item of results) {
+          const node = document.createElement("div");
+          node.className = "row";
+          node.innerHTML = `
+            <div class="row-title">
+              <strong>${escapeHtml(item.title)}</strong>
+              <span class="chip">${escapeHtml(Number(item.score || 0).toFixed(2))}</span>
+            </div>
+            <div class="message">${escapeHtml(item.content || "")}</div>
+            <div class="chips">
+              <span class="chip">${escapeHtml(item.collection)}</span>
+              <span class="chip">${escapeHtml(item.source_id)}</span>
+              <span class="chip">${escapeHtml(item.path)}</span>
+            </div>
+          `;
+          kbSearchResultsRoot.appendChild(node);
+        }
+        renderJson({status: "kb search completed", query: payload.query, collection: payload.collection, result_count: results.length});
+      } finally {
+        searchKbButton.disabled = false;
+        searchKbButton.textContent = "检索";
+      }
+    }
+
+    async function createDoc() {
+      const title = docTitle.value.trim();
+      const content = docContent.value.trim();
+      if (!title || !content) {
+        renderJson({error: "title and content required"});
+        return;
+      }
+      const response = await fetch("/kb/docs", {
+        method: "POST",
+        headers: adminHeaders(),
+        body: JSON.stringify({
+          title,
+          collection: docCollection.value,
+          content,
+          gap_id: docGapId.value.trim() || null
+        })
+      });
+      const payload = await response.json();
+      renderJson(payload);
+      if (response.ok) {
+        docTitle.value = "";
+        docGapId.value = "";
+        docContent.value = "";
+      }
+      await refreshAll();
+    }
+
+    async function rebuildKb() {
+      const response = await fetch("/kb/rebuild", {method: "POST", headers: adminHeaders(false)});
+      renderJson(await response.json());
+      await loadDocs();
+    }
+
+    async function updateTicket(ticketId, status) {
+      await fetch(`/tickets/${encodeURIComponent(ticketId)}`, {
+        method: "PATCH",
+        headers: adminHeaders(),
+        body: JSON.stringify({status, assignee: "ops-demo", note: `dashboard -> ${status}`})
+      });
+      await refreshAll();
+    }
+
+    async function loadAudit() {
+      const traceId = traceInput.value.trim();
+      if (!traceId) return;
+      const response = await fetch(`/audit/${encodeURIComponent(traceId)}`);
+      if (!response.ok) {
+        renderJson({error: "trace not found", trace_id: traceId});
+        return;
+      }
+      renderJson(await response.json());
+    }
+
+    async function loadEvents() {
+      const response = await fetch("/events/recent?limit=80");
+      renderJson(await response.json());
+    }
+
+    async function refreshAll() {
+      await Promise.all([loadMetrics(), loadEvalReport(), loadTickets(), loadGaps(), loadDocs()]);
+    }
+
+    document.querySelector("#refresh").addEventListener("click", refreshAll);
+    document.querySelector("#refreshGaps").addEventListener("click", loadGaps);
+    document.querySelector("#refreshEval").addEventListener("click", loadEvalReport);
+    runEvalButton.addEventListener("click", runEval);
+    document.querySelector("#loadAudit").addEventListener("click", loadAudit);
+    document.querySelector("#loadEvents").addEventListener("click", loadEvents);
+    document.querySelector("#createDoc").addEventListener("click", createDoc);
+    document.querySelector("#rebuildKb").addEventListener("click", rebuildKb);
+    searchKbButton.addEventListener("click", searchKb);
+    kbSearchQuery.addEventListener("keydown", event => {
+      if (event.key === "Enter" && !event.isComposing) {
+        event.preventDefault();
+        searchKb();
+      }
+    });
+    adminKeyInput.value = localStorage.getItem("ica_admin_key") || "";
+    adminKeyInput.addEventListener("input", () => {
+      localStorage.setItem("ica_admin_key", adminKeyInput.value.trim());
+    });
+
+    refreshAll();
+    loadEvents();
+    setInterval(refreshAll, 5000);
+  </script>
+</body>
+</html>

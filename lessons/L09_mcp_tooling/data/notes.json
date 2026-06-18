@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "title": "MCP 学习笔记",
+    "content": "MCP 用 Client-Server 架构统一接入 Tools、Resources、Prompts 和 Sampling。",
+    "tags": [
+      "MCP",
+      "协议"
+    ],
+    "created_at": "2026-06-18T18:14:22",
+    "updated_at": null
+  },
+  {
+    "id": 2,
+    "title": "Function Calling 对比",
+    "content": "Function Calling 更关注模型如何填函数参数；MCP 更关注工具和上下文如何标准化接入。",
+    "tags": [
+      "Agent",
+      "工具调用"
+    ],
+    "created_at": "2026-06-18T18:14:22",
+    "updated_at": null
+  },
+  {
+    "id": 3,
+    "title": "MCP Client 调用记录",
+    "content": "通过 stdio Client 调用了 MCP Server 的 create_note 工具。",
+    "tags": [
+      "MCP",
+      "Client"
+    ],
+    "created_at": "2026-06-18T18:14:22",
+    "updated_at": null
+  },
+  {
+    "id": 4,
+    "title": "LangChain MCP 桥接",
+    "content": "LangChain Tool 可以把调用转发给 MCP Client，再由 MCP Server 执行业务能力。",
+    "tags": [
+      "LangChain",
+      "MCP"
+    ],
+    "created_at": "2026-06-18T18:14:27",
+    "updated_at": null
+  }
+]

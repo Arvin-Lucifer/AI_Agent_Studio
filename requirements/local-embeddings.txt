@@ -1,0 +1,5 @@
+# Optional local embedding stack.
+#
+# 注意：sentence-transformers 会安装 PyTorch；在 Linux 上可能拉取很大的 CUDA 依赖。
+# 只有当课程明确需要本地 embedding 模型时再安装。
+sentence-transformers

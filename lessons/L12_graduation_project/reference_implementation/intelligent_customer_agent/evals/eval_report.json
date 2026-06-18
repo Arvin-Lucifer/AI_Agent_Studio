@@ -1,0 +1,559 @@
+{
+  "metrics": {
+    "total": 32,
+    "intent_accuracy": 1.0,
+    "route_accuracy": 1.0,
+    "ticket_success_rate": 1.0,
+    "fallback_accuracy": 1.0,
+    "clarification_accuracy": 1.0,
+    "keyword_hit_rate": 1.0,
+    "schema_valid_rate": 1.0,
+    "overall_score": 1.0
+  },
+  "results": [
+    {
+      "id": "case_001",
+      "intent": "qa",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.8698,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_002",
+      "intent": "qa",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.4475,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_003",
+      "intent": "qa",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.34,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_004",
+      "intent": "qa",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.6011,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_005",
+      "intent": "qa",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.9944,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_006",
+      "intent": "qa",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.9694,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_007",
+      "intent": "qa",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 1.0,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_008",
+      "intent": "qa",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.972,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_009",
+      "intent": "consult",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.967,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_010",
+      "intent": "consult",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.7783,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_011",
+      "intent": "consult",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.7933,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_012",
+      "intent": "consult",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.8045,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_013",
+      "intent": "complaint",
+      "route": "ticket",
+      "ticket_id": "T-20260618101445-976821",
+      "need_human": true,
+      "confidence": 0.1,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_014",
+      "intent": "complaint",
+      "route": "ticket",
+      "ticket_id": "T-20260618101445-57210a",
+      "need_human": true,
+      "confidence": 0.1,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_015",
+      "intent": "unclear",
+      "route": "clarify",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.2,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_016",
+      "intent": "unclear",
+      "route": "clarify",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.2,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_017",
+      "intent": "out_of_scope",
+      "route": "human_handoff",
+      "ticket_id": "H-20260618101446-6d5a44",
+      "need_human": true,
+      "confidence": 0.1,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_018",
+      "intent": "out_of_scope",
+      "route": "human_handoff",
+      "ticket_id": "H-20260618101446-457f13",
+      "need_human": true,
+      "confidence": 0.1,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_019",
+      "intent": "qa",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.9425,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_020",
+      "intent": "qa",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 1.0,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_021",
+      "intent": "qa",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.9672,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_022",
+      "intent": "qa",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 1.0,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_023",
+      "intent": "qa",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.9579,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_024",
+      "intent": "consult",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.994,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_025",
+      "intent": "consult",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 1.0,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_026",
+      "intent": "consult",
+      "route": "final",
+      "ticket_id": "T-20260618101445-976821",
+      "need_human": true,
+      "confidence": 0.95,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_027",
+      "intent": "qa",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.8471,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_028",
+      "intent": "qa",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 1.0,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_029",
+      "intent": "qa",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.8535,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_030",
+      "intent": "qa",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 1.0,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_031",
+      "intent": "consult",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.8963,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    },
+    {
+      "id": "case_032",
+      "intent": "qa",
+      "route": "retrieve",
+      "ticket_id": null,
+      "need_human": false,
+      "confidence": 0.647,
+      "checks": {
+        "schema": true,
+        "intent": true,
+        "route": true,
+        "ticket": true,
+        "fallback": true,
+        "clarification": true,
+        "keyword": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+-r core.txt
+-r langchain.txt
+-r rag.txt
+-r mcp.txt
+-r deployment.txt

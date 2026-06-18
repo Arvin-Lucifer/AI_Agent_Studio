@@ -1,0 +1,16 @@
+.venv/
+.venv.no-pip.*/
+.env
+__pycache__/
+.pytest_cache/
+*.pyc
+data/kb_index.json
+data/memory.json
+data/tickets.jsonl
+data/knowledge_gaps.jsonl
+data/*.lock
+logs/events.ndjson
+logs/metrics.json
+logs/*.lock
+evals/generated_eval_cases.jsonl
+evals/*.lock

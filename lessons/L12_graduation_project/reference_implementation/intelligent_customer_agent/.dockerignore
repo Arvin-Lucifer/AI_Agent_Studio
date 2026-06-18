@@ -1,0 +1,15 @@
+.env
+.venv
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.git/
+logs/*
+!logs/.gitkeep
+data/kb_index.json
+data/memory.json
+data/tickets.jsonl
+data/knowledge_gaps.jsonl
+evals/eval_report.json
+

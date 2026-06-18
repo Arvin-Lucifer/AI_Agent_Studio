@@ -1,0 +1,18 @@
+services:
+  intelligent-customer-agent:
+    build: .
+    container_name: intelligent_customer_agent
+    environment:
+      PORT: "8011"
+      USE_LLM_ANSWERS: "0"
+    ports:
+      - "8011:8011"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8011/health', timeout=3).read()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

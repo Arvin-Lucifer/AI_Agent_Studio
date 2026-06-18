@@ -1,0 +1,1235 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Intelligent Customer Agent</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f7f9;
+      --surface: #ffffff;
+      --surface-soft: #edf3f5;
+      --surface-warm: #fff8f0;
+      --ink: #17212b;
+      --muted: #5f6d7a;
+      --line: #d7e1e7;
+      --line-strong: #bac9d3;
+      --accent: #176b73;
+      --accent-dark: #0f5157;
+      --info: #365f8c;
+      --warm: #8f623d;
+      --danger: #ad3f3f;
+      --success: #26745d;
+      --user-edge: #34735d;
+      --assistant-edge: #176b73;
+      --shadow: 0 12px 30px rgba(23, 33, 43, .08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+    }
+    button, textarea, input, select { font: inherit; }
+    button {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink);
+      border-radius: 8px;
+      cursor: pointer;
+      min-height: 38px;
+    }
+    button:hover { border-color: var(--line-strong); }
+    button:focus-visible, a:focus-visible, textarea:focus-visible {
+      outline: 3px solid rgba(23, 107, 115, .18);
+      outline-offset: 2px;
+    }
+    button:disabled { opacity: .58; cursor: not-allowed; }
+    .app {
+      height: 100vh;
+      display: grid;
+      grid-template-columns: 304px minmax(0, 1fr) 300px;
+    }
+    .sidebar {
+      border-right: 1px solid var(--line);
+      background: #eaf0f2;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      min-width: 0;
+    }
+    .brand {
+      padding: 20px 18px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand h1 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+    .brand p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .actions {
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 1fr 42px;
+      gap: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    .session-tools {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      gap: 8px;
+    }
+    .session-tools input, .session-tools select {
+      width: 100%;
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 7px 9px;
+      background: rgba(255, 255, 255, .72);
+      color: var(--ink);
+    }
+    .session-tools input:focus, .session-tools select:focus {
+      border-color: var(--accent);
+      outline: 3px solid rgba(23, 107, 115, .14);
+    }
+    .primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      font-weight: 700;
+    }
+    .primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+    .primary:disabled {
+      background: #8fb5ba;
+      border-color: #8fb5ba;
+      color: #ffffff;
+    }
+    .icon-btn {
+      width: 42px;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+    }
+    .sessions {
+      overflow: auto;
+      padding: 8px;
+      display: grid;
+      align-content: start;
+      gap: 6px;
+    }
+    .session-item {
+      width: 100%;
+      text-align: left;
+      padding: 10px;
+      background: transparent;
+      border-color: transparent;
+      display: grid;
+      gap: 7px;
+    }
+    .session-item.active {
+      background: var(--surface);
+      border-color: var(--line-strong);
+      box-shadow: 0 4px 14px rgba(23, 33, 43, .06);
+    }
+    .session-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .session-summary {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .session-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .session-chip {
+      min-height: 20px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 2px 7px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, .65);
+      font-size: 11px;
+      line-height: 1.3;
+    }
+    .session-chip.retrieve, .session-chip.final { color: var(--success); border-color: #b9d7cc; background: #f5fbf8; }
+    .session-chip.ticket, .session-chip.human_handoff { color: var(--warm); border-color: #dfc7ab; background: var(--surface-warm); }
+    .session-chip.complaint, .session-chip.need-human { color: var(--danger); border-color: #e4b8b8; background: #fff6f5; }
+    .session-chip.qa, .session-chip.consult { color: var(--info); border-color: #bfd0df; background: #f5f8fc; }
+    .session-empty {
+      padding: 12px 10px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .sidebar-foot {
+      padding: 12px 14px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      display: grid;
+      gap: 8px;
+    }
+    .main {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+    .topbar {
+      height: 68px;
+      padding: 0 24px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .top-title {
+      min-width: 0;
+      display: grid;
+      gap: 4px;
+    }
+    .top-title strong {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .top-title span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .pill {
+      min-height: 30px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 5px 10px;
+      color: var(--muted);
+      background: #fbfcfd;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .pill.ok { color: var(--success); border-color: #b9d7cc; }
+    .pill.ticket-active { color: var(--danger); border-color: #e4b8b8; background: #fff6f5; }
+    .pill.ready { color: var(--success); border-color: #b9d7cc; background: #f5fbf8; }
+    .pill.handoff { color: var(--warm); border-color: #dfc7ab; background: #fff8ef; }
+    .link-btn {
+      min-height: 32px;
+      padding: 6px 10px;
+      text-decoration: none;
+      color: var(--accent);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .messages {
+      overflow: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .empty {
+      max-width: 760px;
+      margin: auto;
+      display: grid;
+      gap: 18px;
+      text-align: center;
+      color: var(--muted);
+    }
+    .empty strong {
+      color: var(--ink);
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .suggestions button {
+      padding: 8px 11px;
+      color: var(--accent-dark);
+      background: var(--surface);
+    }
+    .message-row {
+      display: grid;
+      grid-template-columns: 34px minmax(0, min(840px, 88%));
+      gap: 10px;
+      align-items: flex-start;
+      width: 100%;
+    }
+    .message-row.user {
+      grid-template-columns: minmax(0, min(840px, 88%)) 34px;
+      justify-content: end;
+    }
+    .message-row.assistant { justify-content: start; }
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 0;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--muted);
+      box-shadow: 0 4px 12px rgba(23, 33, 43, .05);
+    }
+    .message-row.assistant .avatar {
+      color: var(--accent-dark);
+      border-color: #bfd8dc;
+      background: #eef8f9;
+    }
+    .message-row.user .avatar {
+      grid-column: 2;
+      color: var(--user-edge);
+      border-color: #bfd7ce;
+      background: #eef7f2;
+    }
+    .message-row.user .bubble { grid-column: 1; }
+    .message-row.assistant .bubble { grid-column: 2; }
+    .bubble {
+      max-width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: 0 6px 18px rgba(23, 33, 43, .05);
+      overflow: hidden;
+      border-left: 4px solid var(--assistant-edge);
+    }
+    .message-row.user .bubble {
+      background: #f1f8f4;
+      border-color: #c5dacf;
+      border-left-color: var(--user-edge);
+    }
+    .bubble-body {
+      padding: 13px 15px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .bubble-meta {
+      border-top: 1px solid var(--line);
+      padding: 9px 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      background: #fbfcfd;
+    }
+    .bubble-meta span {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 2px 8px;
+      background: var(--surface);
+    }
+    .bubble-meta .ticket { color: var(--danger); border-color: #e4b8b8; }
+    .bubble-meta .time { color: var(--muted); }
+    .bubble-meta .intent.qa, .bubble-meta .intent.consult { color: var(--info); border-color: #bfd0df; background: #f5f8fc; }
+    .bubble-meta .intent.complaint { color: var(--danger); border-color: #e4b8b8; background: #fff6f5; }
+    .bubble-meta .route.retrieve, .bubble-meta .route.final { color: var(--success); border-color: #b9d7cc; background: #f5fbf8; }
+    .bubble-meta .route.ticket, .bubble-meta .route.human_handoff { color: var(--warm); border-color: #dfc7ab; background: var(--surface-warm); }
+    .bubble-meta .trace { color: var(--accent-dark); border-color: #c5dadd; background: #f3fafb; }
+    .sources {
+      display: grid;
+      gap: 6px;
+      padding: 0 12px 12px;
+      background: #fbfcfd;
+    }
+    .source-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 10px;
+      background: var(--surface);
+      display: grid;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .source-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+    .source-snippet {
+      margin: 0;
+      line-height: 1.5;
+      color: var(--ink);
+      overflow-wrap: anywhere;
+    }
+    .source-card strong { color: var(--ink); }
+    .quick-actions {
+      border-top: 1px solid var(--line);
+      padding: 9px 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: #fbfcfd;
+    }
+    .quick-actions button {
+      min-height: 30px;
+      padding: 4px 10px;
+      color: var(--accent-dark);
+      font-size: 12px;
+      font-weight: 700;
+      background: #eef6f7;
+      border-color: #c5dadd;
+    }
+    .message-tools {
+      border-top: 1px solid var(--line);
+      padding: 9px 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: #fbfcfd;
+    }
+    .message-tools button {
+      min-height: 30px;
+      padding: 4px 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--surface);
+    }
+    .message-tools button.retry {
+      color: var(--accent-dark);
+      border-color: #c5dadd;
+      background: #eef6f7;
+    }
+    .feedback-actions {
+      border-top: 1px solid var(--line);
+      padding: 9px 12px;
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      background: #fbfcfd;
+    }
+    .feedback-actions button {
+      min-height: 30px;
+      padding: 4px 10px;
+      color: var(--accent-dark);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .feedback-actions button.selected {
+      border-color: var(--accent);
+      background: #e6f1f2;
+    }
+    .composer {
+      padding: 14px 24px 20px;
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      display: grid;
+      gap: 10px;
+    }
+    .composer-inner {
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      padding: 8px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      background: #fbfcfd;
+      box-shadow: var(--shadow);
+    }
+    .composer-inner:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(23, 107, 115, .12), var(--shadow);
+      background: var(--surface);
+    }
+    textarea {
+      width: 100%;
+      min-height: 42px;
+      max-height: 160px;
+      resize: none;
+      border: 0;
+      outline: none;
+      background: transparent;
+      padding: 9px 10px;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+    .send-btn {
+      align-self: end;
+      min-width: 78px;
+      padding: 0 14px;
+      height: 40px;
+    }
+    .composer-status {
+      min-height: 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .insight {
+      border-left: 1px solid var(--line);
+      background: #f8fafb;
+      min-width: 0;
+      overflow: auto;
+    }
+    .insight-head {
+      min-height: 68px;
+      padding: 15px 16px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .insight-head h2 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+    .insight-section {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      gap: 10px;
+    }
+    .insight-section h3 {
+      margin: 0;
+      font-size: 13px;
+      letter-spacing: 0;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .insight-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .insight-metric {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 9px;
+      background: var(--surface);
+      min-height: 58px;
+    }
+    .insight-metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 5px;
+    }
+    .insight-metric strong {
+      display: block;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+      letter-spacing: 0;
+    }
+    .insight-list {
+      display: grid;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .insight-list div {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 9px;
+      background: var(--surface);
+      overflow-wrap: anywhere;
+    }
+    .insight-actions {
+      display: grid;
+      gap: 8px;
+    }
+    .insight-actions button {
+      text-align: left;
+      min-height: 34px;
+      padding: 6px 9px;
+      color: var(--accent-dark);
+      background: #eef6f7;
+      border-color: #c5dadd;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .typing {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 999px;
+      background: var(--accent);
+      animation: pulse 1s infinite ease-in-out;
+    }
+    .dot:nth-child(2) { animation-delay: .15s; }
+    .dot:nth-child(3) { animation-delay: .3s; }
+    @keyframes pulse {
+      0%, 80%, 100% { opacity: .25; transform: translateY(0); }
+      40% { opacity: 1; transform: translateY(-3px); }
+    }
+    @media (max-width: 1180px) {
+      .app { grid-template-columns: 280px minmax(0, 1fr); }
+      .insight { display: none; }
+    }
+    @media (max-width: 860px) {
+      .app { grid-template-columns: 1fr; height: auto; min-height: 100vh; }
+      .sidebar { display: none; }
+      .main { min-height: 100vh; }
+      .topbar { height: auto; min-height: 66px; padding: 12px 14px; align-items: flex-start; }
+      .messages { padding: 16px 14px; }
+      .message-row, .message-row.user { grid-template-columns: 30px minmax(0, 1fr); }
+      .message-row.user .avatar { grid-column: 1; }
+      .message-row.user .bubble { grid-column: 2; }
+      .avatar { width: 30px; height: 30px; }
+      .composer { padding: 12px 14px 16px; }
+      .composer-inner { grid-template-columns: 1fr; }
+      .send-btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <h1>智能客服 Agent</h1>
+        <p>客服工作台</p>
+      </div>
+      <div class="actions">
+        <button class="primary" id="newSession">新会话</button>
+        <button class="icon-btn" id="refreshSessions" title="刷新会话">↻</button>
+      </div>
+      <div class="session-tools">
+        <input id="sessionSearch" placeholder="搜索会话、工单、状态">
+        <select id="sessionFilter">
+          <option value="all">全部会话</option>
+          <option value="need_human">待人工</option>
+          <option value="ticket">有工单</option>
+          <option value="retrieve">RAG 已回答</option>
+          <option value="clarify">需澄清</option>
+        </select>
+      </div>
+      <div class="sessions" id="sessions"></div>
+      <div class="sidebar-foot">
+        <span id="sessionLabel">Session -</span>
+        <span id="lastTrace">Trace -</span>
+      </div>
+    </aside>
+
+    <section class="main">
+      <header class="topbar">
+        <div class="top-title">
+          <strong id="chatTitle">Customer Console</strong>
+          <span id="subTitle">准备就绪</span>
+        </div>
+        <div class="top-actions">
+          <span class="pill ok" id="health">online</span>
+          <span class="pill" id="ticketState">ticket -</span>
+          <a class="link-btn" href="/web/dashboard.html">Dashboard</a>
+          <a class="link-btn" href="/docs">API Docs</a>
+        </div>
+      </header>
+
+      <div class="messages" id="messages"></div>
+
+      <form class="composer" id="chatForm">
+        <div class="composer-inner">
+          <textarea id="message" name="message" rows="1" placeholder="输入问题"></textarea>
+          <button class="primary send-btn" id="send" type="submit">发送</button>
+        </div>
+        <div class="composer-status">
+          <span id="statusText">准备接收问题</span>
+          <span id="charCount">0 / 2000</span>
+        </div>
+      </form>
+    </section>
+
+    <aside class="insight">
+      <div class="insight-head">
+        <h2>Session Insight</h2>
+        <span class="pill" id="insightState">idle</span>
+      </div>
+      <section class="insight-section">
+        <h3>Routing</h3>
+        <div class="insight-grid">
+          <div class="insight-metric"><span>Intent</span><strong id="insightIntent">-</strong></div>
+          <div class="insight-metric"><span>Route</span><strong id="insightRoute">-</strong></div>
+          <div class="insight-metric"><span>Confidence</span><strong id="insightConfidence">-</strong></div>
+          <div class="insight-metric"><span>Evidence</span><strong id="insightEvidence">-</strong></div>
+          <div class="insight-metric"><span>Latency</span><strong id="insightLatency">-</strong></div>
+        </div>
+      </section>
+      <section class="insight-section">
+        <h3>Context</h3>
+        <div class="insight-list">
+          <div id="insightTicket">ticket -</div>
+          <div id="insightQuery">query -</div>
+        </div>
+      </section>
+      <section class="insight-section">
+        <h3>Sources</h3>
+        <div class="insight-list" id="insightSources"><div>-</div></div>
+      </section>
+      <section class="insight-section">
+        <h3>Next</h3>
+        <div class="insight-actions" id="insightActions"></div>
+      </section>
+    </aside>
+  </main>
+
+  <script>
+    const state = {
+      sessionId: localStorage.getItem("ica_session") || createSessionId(),
+      pending: false,
+      messages: [],
+      sessions: []
+    };
+    localStorage.setItem("ica_session", state.sessionId);
+
+    const el = {
+      sessions: document.querySelector("#sessions"),
+      messages: document.querySelector("#messages"),
+      form: document.querySelector("#chatForm"),
+      input: document.querySelector("#message"),
+      send: document.querySelector("#send"),
+      status: document.querySelector("#statusText"),
+      chars: document.querySelector("#charCount"),
+      sessionLabel: document.querySelector("#sessionLabel"),
+      lastTrace: document.querySelector("#lastTrace"),
+      ticketState: document.querySelector("#ticketState"),
+      subTitle: document.querySelector("#subTitle"),
+      sessionSearch: document.querySelector("#sessionSearch"),
+      sessionFilter: document.querySelector("#sessionFilter"),
+      newSession: document.querySelector("#newSession"),
+      refreshSessions: document.querySelector("#refreshSessions"),
+      health: document.querySelector("#health"),
+      insightState: document.querySelector("#insightState"),
+      insightIntent: document.querySelector("#insightIntent"),
+      insightRoute: document.querySelector("#insightRoute"),
+      insightConfidence: document.querySelector("#insightConfidence"),
+      insightEvidence: document.querySelector("#insightEvidence"),
+      insightLatency: document.querySelector("#insightLatency"),
+      insightTicket: document.querySelector("#insightTicket"),
+      insightQuery: document.querySelector("#insightQuery"),
+      insightSources: document.querySelector("#insightSources"),
+      insightActions: document.querySelector("#insightActions")
+    };
+
+    const suggestions = [
+      "忘记密码怎么找回？",
+      "我想退款，怎么处理？",
+      "专业版和企业版有什么区别？",
+      "登录失败而且收不到验证码怎么办？",
+      "我要投诉，你们客服态度差"
+    ];
+
+    function createSessionId() {
+      return `web_${crypto.randomUUID().slice(0, 8)}`;
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function formatTime(ts) {
+      const raw = Number(ts || Date.now());
+      const date = new Date(raw < 10000000000 ? raw * 1000 : raw);
+      return date.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", second: "2-digit"});
+    }
+
+    function formatRelativeTime(ts) {
+      const raw = Number(ts || 0);
+      if (!raw) return "-";
+      const ms = (raw < 10000000000 ? raw * 1000 : raw);
+      const seconds = Math.max(1, Math.round((Date.now() - ms) / 1000));
+      if (seconds < 60) return `${seconds}s`;
+      const minutes = Math.round(seconds / 60);
+      if (minutes < 60) return `${minutes}m`;
+      const hours = Math.round(minutes / 60);
+      if (hours < 24) return `${hours}h`;
+      const days = Math.round(hours / 24);
+      return `${days}d`;
+    }
+
+    function cssToken(value) {
+      return String(value || "").replace(/[^a-zA-Z0-9_-]/g, "");
+    }
+
+    function sessionMatchesFilter(session) {
+      const filter = el.sessionFilter.value;
+      if (filter === "need_human") return Boolean(session.need_human);
+      if (filter === "ticket") return Boolean(session.ticket_id);
+      if (filter === "retrieve") return session.last_route === "retrieve" || session.last_route === "final";
+      if (filter === "clarify") return session.last_route === "clarify";
+      return true;
+    }
+
+    function sessionMatchesSearch(session) {
+      const keyword = el.sessionSearch.value.trim().toLowerCase();
+      if (!keyword) return true;
+      const haystack = [
+        session.session_id,
+        session.title,
+        session.summary,
+        session.last_intent,
+        session.last_route,
+        session.ticket_id,
+      ].filter(Boolean).join(" ").toLowerCase();
+      return haystack.includes(keyword);
+    }
+
+    function resetInsight() {
+      el.insightState.textContent = "idle";
+      el.insightState.className = "pill";
+      el.insightIntent.textContent = "-";
+      el.insightRoute.textContent = "-";
+      el.insightConfidence.textContent = "-";
+      el.insightEvidence.textContent = "-";
+      el.insightLatency.textContent = "-";
+      el.insightTicket.textContent = "ticket -";
+      el.insightQuery.textContent = "query -";
+      el.insightSources.innerHTML = "<div>-</div>";
+      el.insightActions.innerHTML = "";
+    }
+
+    function setTopStatus(meta = {}) {
+      el.lastTrace.textContent = meta.trace_id ? `Trace ${meta.trace_id}` : "Trace -";
+      el.ticketState.textContent = meta.ticket_id ? `ticket ${meta.ticket_id}` : "ticket -";
+      el.ticketState.className = meta.ticket_id ? "pill ticket-active" : "pill";
+      if (meta.need_human) el.ticketState.className = "pill handoff";
+    }
+
+    function updateInsight(meta = {}, citations = []) {
+      const actions = meta.suggested_actions || [];
+      el.insightState.textContent = meta.need_human ? "handoff" : (meta.route || "ready");
+      el.insightState.className = `pill ${meta.need_human ? "handoff" : "ready"}`;
+      el.insightIntent.textContent = meta.intent || "-";
+      el.insightRoute.textContent = meta.route || "-";
+      el.insightConfidence.textContent = typeof meta.confidence === "number" ? meta.confidence.toFixed(3) : "-";
+      el.insightEvidence.textContent = meta.evidence_count == null ? "-" : String(meta.evidence_count);
+      el.insightLatency.textContent = typeof meta.latency_ms === "number" ? `${Math.round(meta.latency_ms)}ms` : "-";
+      el.insightTicket.textContent = meta.ticket_id ? `ticket ${meta.ticket_id}` : "ticket -";
+      el.insightQuery.textContent = meta.contextual_query ? `query ${meta.contextual_query}` : "query -";
+      el.insightSources.innerHTML = citations.length ? citations.slice(0, 3).map(source => `
+        <div>${escapeHtml(source.title || source.source_id)} · ${escapeHtml(source.collection || "")} · ${Number(source.score || 0).toFixed(3)}</div>
+      `).join("") : "<div>-</div>";
+      el.insightActions.innerHTML = actions.length ? actions.map(action => `
+        <button type="button" data-insight-action="${escapeHtml(action)}">${escapeHtml(action)}</button>
+      `).join("") : "";
+      el.insightActions.querySelectorAll("[data-insight-action]").forEach(button => {
+        button.addEventListener("click", () => {
+          el.input.value = button.dataset.insightAction;
+          updateComposer();
+          submitMessage();
+        });
+      });
+    }
+
+    function setSession(sessionId) {
+      state.sessionId = sessionId;
+      localStorage.setItem("ica_session", sessionId);
+      el.sessionLabel.textContent = `Session ${sessionId}`;
+      el.subTitle.textContent = sessionId;
+    }
+
+    function renderEmpty() {
+      const buttons = suggestions.map(text => `<button type="button" data-suggest="${escapeHtml(text)}">${escapeHtml(text)}</button>`).join("");
+      el.messages.innerHTML = `
+        <div class="empty">
+          <strong>今天要处理什么问题？</strong>
+          <div class="suggestions">${buttons}</div>
+        </div>
+      `;
+      el.messages.querySelectorAll("[data-suggest]").forEach(button => {
+        button.addEventListener("click", () => {
+          el.input.value = button.dataset.suggest;
+          updateComposer();
+          submitMessage();
+        });
+      });
+    }
+
+    function renderMessages() {
+      if (!state.messages.length) {
+        renderEmpty();
+        return;
+      }
+      el.messages.innerHTML = "";
+      for (const item of state.messages) {
+        appendMessage(item, false);
+      }
+      scrollBottom();
+    }
+
+    function appendMessage(item, shouldScroll = true) {
+      const row = document.createElement("div");
+      row.className = `message-row ${item.role === "user" ? "user" : "assistant"}`;
+      const meta = item.metadata || {};
+      const citations = item.citations || meta.citations || [];
+      const actions = meta.suggested_actions || [];
+      const toolButtons = [];
+      if (meta.trace_id) toolButtons.push(`<button type="button" data-copy="${escapeHtml(meta.trace_id)}">复制 trace</button>`);
+      if (meta.ticket_id) toolButtons.push(`<button type="button" data-copy="${escapeHtml(meta.ticket_id)}">复制工单</button>`);
+      if (meta.can_retry && meta.retry_text) toolButtons.push(`<button type="button" class="retry" data-retry="${escapeHtml(meta.retry_text)}">重试</button>`);
+      const tags = [];
+      tags.push({label: formatTime(item.ts), className: "time"});
+      if (meta.intent) tags.push({label: `intent: ${meta.intent}`, className: `intent ${meta.intent}`});
+      if (meta.route) tags.push({label: `route: ${meta.route}`, className: `route ${meta.route}`});
+      if (typeof meta.confidence === "number") tags.push({label: `confidence: ${meta.confidence}`, className: "confidence"});
+      if (typeof meta.latency_ms === "number") tags.push({label: `${Math.round(meta.latency_ms)}ms`, className: "latency"});
+      if (meta.answer_mode) tags.push({label: meta.answer_mode, className: "mode"});
+      if (meta.query_rewritten) tags.push({label: "contextual", className: "contextual"});
+      if (meta.ticket_id) tags.push({label: `ticket: ${meta.ticket_id}`, className: "ticket"});
+      if (meta.trace_id) tags.push({label: `trace: ${meta.trace_id}`, className: "trace"});
+      const avatarLabel = item.role === "user" ? "你" : (meta.route === "error" ? "!" : "AI");
+      row.innerHTML = `
+        <div class="avatar" aria-hidden="true">${escapeHtml(avatarLabel)}</div>
+        <article class="bubble">
+          <div class="bubble-body">${escapeHtml(item.content || "")}</div>
+          ${tags.length ? `<div class="bubble-meta">${tags.map(tag => `<span class="${escapeHtml(tag.className)}">${escapeHtml(tag.label)}</span>`).join("")}</div>` : ""}
+          ${citations.length ? `<div class="sources">${citations.map(source => `
+            <div class="source-card">
+              <div class="source-head">
+                <span><strong>${escapeHtml(source.title || source.source_id)}</strong> · ${escapeHtml(source.collection || "")}</span>
+                <span>${Number(source.score || 0).toFixed(3)}</span>
+              </div>
+              ${source.snippet ? `<p class="source-snippet">${escapeHtml(source.snippet)}</p>` : ""}
+            </div>`).join("")}</div>` : ""}
+          ${item.role === "assistant" && actions.length ? `<div class="quick-actions">
+            ${actions.map(action => `<button type="button" data-action="${escapeHtml(action)}">${escapeHtml(action)}</button>`).join("")}
+          </div>` : ""}
+          ${item.role === "assistant" && toolButtons.length ? `<div class="message-tools">${toolButtons.join("")}</div>` : ""}
+          ${item.role === "assistant" && meta.trace_id ? `<div class="feedback-actions">
+            <button type="button" data-feedback="up" data-trace="${escapeHtml(meta.trace_id)}">有用</button>
+            <button type="button" data-feedback="down" data-trace="${escapeHtml(meta.trace_id)}">需改进</button>
+          </div>` : ""}
+        </article>
+      `;
+      el.messages.appendChild(row);
+      row.querySelectorAll("[data-feedback]").forEach(button => {
+        button.addEventListener("click", () => sendFeedback(button));
+      });
+      row.querySelectorAll("[data-action]").forEach(button => {
+        button.addEventListener("click", () => {
+          el.input.value = button.dataset.action;
+          updateComposer();
+          submitMessage();
+        });
+      });
+      row.querySelectorAll("[data-copy]").forEach(button => {
+        button.addEventListener("click", () => copyText(button.dataset.copy || "", button));
+      });
+      row.querySelectorAll("[data-retry]").forEach(button => {
+        button.addEventListener("click", () => {
+          el.input.value = button.dataset.retry || "";
+          updateComposer();
+          submitMessage();
+        });
+      });
+      if (shouldScroll) scrollBottom();
+    }
+
+    async function copyText(text, button) {
+      if (!text) return;
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const field = document.createElement("textarea");
+          field.value = text;
+          field.style.position = "fixed";
+          field.style.opacity = "0";
+          document.body.appendChild(field);
+          field.select();
+          document.execCommand("copy");
+          field.remove();
+        }
+        const original = button.textContent;
+        button.textContent = "已复制";
+        el.status.textContent = "已复制到剪贴板";
+        setTimeout(() => { button.textContent = original; }, 1200);
+      } catch {
+        el.status.textContent = "复制失败";
+      }
+    }
+
+    async function sendFeedback(button) {
+      const traceId = button.dataset.trace;
+      const rating = button.dataset.feedback;
+      if (!traceId || !rating) return;
+      const group = button.closest(".feedback-actions");
+      group.querySelectorAll("button").forEach(item => item.disabled = true);
+      const comment = rating === "down" ? window.prompt("哪里需要改进？这会进入知识缺口队列。", "答案不够准确或不够清楚") : null;
+      try {
+        await fetch("/feedback", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({trace_id: traceId, session_id: state.sessionId, rating, comment})
+        });
+        button.classList.add("selected");
+        el.status.textContent = "反馈已记录";
+      } catch {
+        group.querySelectorAll("button").forEach(item => item.disabled = false);
+        el.status.textContent = "反馈提交失败";
+      }
+    }
+
+    function appendTyping() {
+      const row = document.createElement("div");
+      row.className = "message-row assistant";
+      row.id = "typing";
+      row.innerHTML = `
+        <article class="bubble">
+          <div class="bubble-body typing"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        </article>
+      `;
+      el.messages.appendChild(row);
+      scrollBottom();
+    }
+
+    function removeTyping() {
+      document.querySelector("#typing")?.remove();
+    }
+
+    function scrollBottom() {
+      el.messages.scrollTop = el.messages.scrollHeight;
+    }
+
+    function updateComposer() {
+      const length = el.input.value.length;
+      el.chars.textContent = `${length} / 2000`;
+      el.input.style.height = "auto";
+      el.input.style.height = `${Math.min(el.input.scrollHeight, 160)}px`;
+      el.send.disabled = state.pending || length === 0 || length > 2000;
+    }
+
+    function renderSessions() {
+      const sessions = state.sessions.filter(session => sessionMatchesFilter(session) && sessionMatchesSearch(session));
+      el.sessions.innerHTML = "";
+      if (!sessions.length) {
+        el.sessions.innerHTML = `<div class="session-empty">没有匹配的会话</div>`;
+        return;
+      }
+      for (const session of sessions.slice(0, 40)) {
+        const button = document.createElement("button");
+        button.className = `session-item ${session.session_id === state.sessionId ? "active" : ""}`;
+        const route = session.last_route || "new";
+        const intent = session.last_intent || "-";
+        button.innerHTML = `
+          <span class="session-title">${escapeHtml(session.title || session.session_id)}</span>
+          <span class="session-meta">
+            <span class="session-chip ${escapeHtml(cssToken(route))}">${escapeHtml(route)}</span>
+            ${session.last_intent ? `<span class="session-chip ${escapeHtml(cssToken(intent))}">${escapeHtml(intent)}</span>` : ""}
+            ${session.need_human ? `<span class="session-chip need-human">人工</span>` : ""}
+            ${session.ticket_id ? `<span class="session-chip ticket">${escapeHtml(session.ticket_id)}</span>` : ""}
+            <span class="session-chip">${escapeHtml(formatRelativeTime(session.last_updated))}</span>
+          </span>
+          <span class="session-summary">${escapeHtml(session.summary || session.session_id)}</span>
+        `;
+        button.addEventListener("click", async () => {
+          setSession(session.session_id);
+          await loadHistory();
+          await loadSessions();
+        });
+        el.sessions.appendChild(button);
+      }
+    }
+
+    async function loadSessions() {
+      try {
+        const response = await fetch("/sessions");
+        const payload = await response.json();
+        state.sessions = payload.sessions || [];
+        renderSessions();
+      } catch {
+        el.sessions.innerHTML = "";
+      }
+    }
+
+    async function loadHistory() {
+      setSession(state.sessionId);
+      try {
+        const response = await fetch(`/sessions/${encodeURIComponent(state.sessionId)}/history`);
+        const payload = await response.json();
+        state.messages = (payload.messages || []).map(message => ({
+          role: message.role,
+          content: message.content,
+          ts: message.ts,
+          metadata: message.metadata || {}
+        }));
+        renderMessages();
+        const latestAssistant = [...state.messages].reverse().find(message => message.role === "assistant");
+        if (latestAssistant) {
+          updateInsight(latestAssistant.metadata || {}, latestAssistant.metadata?.citations || []);
+          setTopStatus(latestAssistant.metadata || {});
+        } else {
+          resetInsight();
+          setTopStatus({});
+        }
+      } catch {
+        state.messages = [];
+        renderMessages();
+        resetInsight();
+        setTopStatus({});
+      }
+    }
+
+    async function checkHealth() {
+      const started = performance.now();
+      try {
+        const response = await fetch("/health");
+        if (!response.ok) throw new Error("bad status");
+        el.health.textContent = `online ${Math.round(performance.now() - started)}ms`;
+        el.health.classList.add("ok");
+      } catch {
+        el.health.textContent = "offline";
+        el.health.classList.remove("ok");
+      }
+    }
+
+    async function submitMessage() {
+      const text = el.input.value.trim();
+      if (!text || state.pending || text.length > 2000) return;
+      state.pending = true;
+      el.send.textContent = "处理中";
+      el.status.textContent = "正在处理...";
+      updateComposer();
+
+      if (!state.messages.length) el.messages.innerHTML = "";
+      const userMessage = {role: "user", content: text, ts: Date.now(), metadata: {}};
+      state.messages.push(userMessage);
+      appendMessage(userMessage);
+      el.input.value = "";
+      updateComposer();
+      appendTyping();
+
+      try {
+        const response = await fetch("/chat", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({message: text, session_id: state.sessionId})
+        });
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.detail || "request failed");
+        removeTyping();
+        const assistantMessage = {
+          role: "assistant",
+          content: payload.reply,
+          citations: payload.citations || [],
+          metadata: {
+            trace_id: payload.trace_id,
+            intent: payload.intent,
+            route: payload.route,
+            confidence: payload.confidence,
+            ticket_id: payload.ticket_id,
+            need_human: payload.need_human,
+            evidence_count: payload.metadata?.evidence_count,
+            answer_mode: payload.metadata?.answer_mode,
+            contextual_query: payload.metadata?.contextual_query,
+            query_rewritten: payload.metadata?.query_rewritten,
+            context_terms: payload.metadata?.context_terms || [],
+            suggested_actions: payload.metadata?.suggested_actions || [],
+            latency_ms: payload.metadata?.latency_ms
+          }
+        };
+        assistantMessage.ts = Date.now();
+        state.messages.push(assistantMessage);
+        appendMessage(assistantMessage);
+        updateInsight(assistantMessage.metadata, assistantMessage.citations);
+        setTopStatus(assistantMessage.metadata);
+        el.status.textContent = payload.need_human ? "已转人工" : "已完成";
+        await loadSessions();
+      } catch {
+        removeTyping();
+        const failed = {
+          role: "assistant",
+          content: "请求失败，请确认服务正在运行后重试。",
+          ts: Date.now(),
+          metadata: {route: "error", can_retry: true, retry_text: text}
+        };
+        state.messages.push(failed);
+        appendMessage(failed);
+        el.status.textContent = "请求失败";
+      } finally {
+        state.pending = false;
+        el.send.textContent = "发送";
+        updateComposer();
+        el.input.focus();
+      }
+    }
+
+    el.form.addEventListener("submit", event => {
+      event.preventDefault();
+      submitMessage();
+    });
+
+    el.input.addEventListener("keydown", event => {
+      if (event.key === "Enter" && !event.shiftKey && !event.isComposing) {
+        event.preventDefault();
+        submitMessage();
+      }
+    });
+
+    el.input.addEventListener("input", updateComposer);
+
+    el.newSession.addEventListener("click", async () => {
+      setSession(createSessionId());
+      state.messages = [];
+      setTopStatus({});
+      el.status.textContent = "新会话";
+      resetInsight();
+      renderMessages();
+      await loadSessions();
+      el.input.focus();
+    });
+
+    el.refreshSessions.addEventListener("click", loadSessions);
+    el.sessionSearch.addEventListener("input", renderSessions);
+    el.sessionFilter.addEventListener("change", renderSessions);
+
+    setSession(state.sessionId);
+    resetInsight();
+    updateComposer();
+    checkHealth();
+    loadHistory();
+    loadSessions();
+    setInterval(checkHealth, 15000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+{
+  "entities": {
+    "小明": {
+      "type": "person",
+      "props": {
+        "updated_at": "2026-06-18T18:14:00"
+      }
+    },
+    "用户中心项目": {
+      "type": "project",
+      "props": {
+        "updated_at": "2026-06-18T18:14:00"
+      }
+    },
+    "FastAPI": {
+      "type": "tech",
+      "props": {
+        "updated_at": "2026-06-18T18:14:00"
+      }
+    },
+    "团队A": {
+      "type": "org",
+      "props": {
+        "updated_at": "2026-06-18T18:14:00"
+      }
+    },
+    "Web 框架": {
+      "type": "category",
+      "props": {
+        "updated_at": "2026-06-18T18:14:00"
+      }
+    }
+  },
+  "relations": [
+    {
+      "id": "582174ae-dd20-4a97-ab66-c1c7034df375",
+      "subject": "小明",
+      "predicate": "负责",
+      "object": "用户中心项目",
+      "props": {
+        "timestamp": "2026-06-18T18:14:00"
+      }
+    },
+    {
+      "id": "24580dd0-ec6d-4c76-bfee-77bc8e8221ea",
+      "subject": "小明",
+      "predicate": "属于",
+      "object": "团队A",
+      "props": {
+        "timestamp": "2026-06-18T18:14:00"
+      }
+    },
+    {
+      "id": "0cb8d72a-ed6c-4708-ab57-f2aa81650545",
+      "subject": "用户中心项目",
+      "predicate": "使用",
+      "object": "FastAPI",
+      "props": {
+        "timestamp": "2026-06-18T18:14:00"
+      }
+    },
+    {
+      "id": "637b46bb-6904-4511-9ef4-d819f79c873e",
+      "subject": "FastAPI",
+      "predicate": "属于类型",
+      "object": "Web 框架",
+      "props": {
+        "timestamp": "2026-06-18T18:14:00"
+      }
+    }
+  ]
+}

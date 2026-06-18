@@ -1,0 +1,226 @@
+[
+  {
+    "id": "F001",
+    "category": "core",
+    "description": "FastAPI /chat 接口可调用并返回统一 schema",
+    "passes": true,
+    "check": "pytest tests/test_api.py"
+  },
+  {
+    "id": "F002",
+    "category": "core",
+    "description": "LangGraph 按意图路由到 RAG / 工单 / 澄清 / 转人工",
+    "passes": true,
+    "check": "pytest tests/test_graph.py"
+  },
+  {
+    "id": "F003",
+    "category": "rag",
+    "description": "知识库至少 10 份文档并可检索",
+    "passes": true,
+    "check": "pytest tests/test_rag.py"
+  },
+  {
+    "id": "F004",
+    "category": "guardrail",
+    "description": "投诉强制工单、无证据不编造、低置信度转人工",
+    "passes": true,
+    "check": "pytest tests/test_guardrails.py"
+  },
+  {
+    "id": "F005",
+    "category": "eval",
+    "description": "评测集和独立评测脚本可运行并生成报告",
+    "passes": true,
+    "check": "pytest tests/test_eval.py && python evals/run_eval.py"
+  },
+  {
+    "id": "F006",
+    "category": "observability",
+    "description": "trace_id、events.ndjson、metrics、audit 接口可用",
+    "passes": true,
+    "check": "pytest tests/test_api.py"
+  },
+  {
+    "id": "F007",
+    "category": "product",
+    "description": "客服工作台支持会话恢复、Enter 发送、发送中状态、引用/工单展示，并提供可选 grounded LLM 回答",
+    "passes": true,
+    "check": "pytest -q && python evals/run_eval.py"
+  },
+  {
+    "id": "F008",
+    "category": "product",
+    "description": "生产反馈闭环支持答案反馈、工单状态更新、近期事件和 Dashboard 审计回放",
+    "passes": true,
+    "check": "pytest tests/test_api.py"
+  },
+  {
+    "id": "F009",
+    "category": "product",
+    "description": "知识缺口闭环支持低置信度/差评自动记录、Dashboard 管理和 trace 回放",
+    "passes": true,
+    "check": "pytest tests/test_api.py"
+  },
+  {
+    "id": "F010",
+    "category": "product",
+    "description": "知识库运营闭环支持新增 Markdown 文档、重建索引并让新知识进入 RAG 检索",
+    "passes": true,
+    "check": "pytest tests/test_api.py"
+  },
+  {
+    "id": "F011",
+    "category": "ops",
+    "description": "部署运维闭环提供 Dockerfile、docker-compose、Makefile、entrypoint 和 healthcheck",
+    "passes": true,
+    "check": "pytest tests/test_deployment.py"
+  },
+  {
+    "id": "F012",
+    "category": "security",
+    "description": "安全护栏支持可选 Admin Key、管理写接口保护、聊天限流和 compose 密钥防泄露",
+    "passes": true,
+    "check": "pytest tests/test_security.py tests/test_deployment.py"
+  },
+  {
+    "id": "F013",
+    "category": "product",
+    "description": "智能工单支持订单号、联系方式掩码、问题类型、紧急程度、优先级和 SLA 自动抽取",
+    "passes": true,
+    "check": "pytest tests/test_ticket_extractor.py tests/test_api.py"
+  },
+  {
+    "id": "F014",
+    "category": "product",
+    "description": "多轮工单补充支持用户后续提供订单号/联系方式并更新原工单",
+    "passes": true,
+    "check": "pytest tests/test_api.py"
+  },
+  {
+    "id": "F015",
+    "category": "ops",
+    "description": "SLA 监控支持 due_at、minutes_to_due、overdue 统计和 Dashboard 高亮",
+    "passes": true,
+    "check": "pytest tests/test_ticket_extractor.py tests/test_api.py"
+  },
+  {
+    "id": "F016",
+    "category": "eval",
+    "description": "质量门禁支持 /eval/report、/eval/run 和 Dashboard 评测报告可视化",
+    "passes": true,
+    "check": "pytest tests/test_api.py tests/test_eval.py && python evals/run_eval.py"
+  },
+  {
+    "id": "F017",
+    "category": "ops",
+    "description": "并发持久化护栏为 memory、tickets、knowledge gaps、events 和 metrics 增加 sidecar 文件锁",
+    "passes": true,
+    "check": "pytest tests/test_persistence.py"
+  },
+  {
+    "id": "F018",
+    "category": "product",
+    "description": "多轮短追问支持上下文查询改写，前端展示 suggested_actions 快捷继续提问",
+    "passes": true,
+    "check": "pytest tests/test_context_tool.py tests/test_graph.py && python evals/run_eval.py"
+  },
+  {
+    "id": "F019",
+    "category": "security",
+    "description": "隐私脱敏护栏自动遮罩审计事件、工单正文和备注中的手机号、邮箱和长数字凭证",
+    "passes": true,
+    "check": "pytest tests/test_privacy.py tests/test_api.py"
+  },
+  {
+    "id": "F020",
+    "category": "product",
+    "description": "聊天内工单状态查询支持当前 session 最新工单和显式工单号查询",
+    "passes": true,
+    "check": "pytest tests/test_graph.py && python evals/run_eval.py"
+  },
+  {
+    "id": "F021",
+    "category": "ops",
+    "description": "人工接手摘要自动整理当前问题、最近对话、证据来源、缺失字段和下一步建议",
+    "passes": true,
+    "check": "pytest tests/test_handoff.py tests/test_api.py"
+  },
+  {
+    "id": "F022",
+    "category": "product",
+    "description": "聊天页 Session Insight 面板持续展示路由、置信度、证据、工单、上下文查询和建议动作",
+    "passes": true,
+    "check": "pytest tests/test_security.py && python evals/run_eval.py"
+  },
+  {
+    "id": "F023",
+    "category": "rag",
+    "description": "Citation schema 和聊天页引用卡片展示知识库证据片段，提升 RAG 可解释性",
+    "passes": true,
+    "check": "pytest tests/test_api.py && python evals/run_eval.py"
+  },
+  {
+    "id": "F024",
+    "category": "eval",
+    "description": "knowledge gap 可生成 generated_eval_cases.jsonl 评测草稿，Dashboard 支持转评测",
+    "passes": true,
+    "check": "pytest tests/test_api.py::test_knowledge_gap_can_generate_eval_case && python evals/run_eval.py"
+  },
+  {
+    "id": "F025",
+    "category": "rag",
+    "description": "知识库 Search Lab 支持 /kb/search 和 Dashboard 检索调试，展示命中文档、分数和证据片段",
+    "passes": true,
+    "check": "pytest tests/test_api.py::test_kb_search_endpoint_returns_debug_results tests/test_security.py::test_frontend_script_syntax_if_node_is_available"
+  },
+  {
+    "id": "F026",
+    "category": "product",
+    "description": "客服工作台持续展示消息时间、响应耗时和健康状态轮询，并兼容中文输入法 Enter 发送",
+    "passes": true,
+    "check": "pytest tests/test_api.py::test_chat_returns_uniform_schema tests/test_security.py::test_frontend_script_syntax_if_node_is_available"
+  },
+  {
+    "id": "F027",
+    "category": "rag",
+    "description": "口语化查询归一化将退钱、短信码、开票、转圈打不开等真实用户说法映射到知识库概念，提升 RAG 召回",
+    "passes": true,
+    "check": "pytest tests/test_context_tool.py tests/test_graph.py && python evals/run_eval.py"
+  },
+  {
+    "id": "F028",
+    "category": "product",
+    "description": "聊天页支持失败重试、复制 trace/工单号，以及带原因的差评反馈，提升客服台可恢复和可运营体验",
+    "passes": true,
+    "check": "pytest tests/test_security.py::test_chat_frontend_keeps_operational_controls"
+  },
+  {
+    "id": "F029",
+    "category": "product",
+    "description": "聊天页视觉层次升级：消息头像、状态色 chip、输入焦点态和发送处理中状态，让界面更接近客服工作台",
+    "passes": true,
+    "check": "pytest tests/test_security.py::test_chat_frontend_has_polished_status_visuals"
+  },
+  {
+    "id": "F030",
+    "category": "product",
+    "description": "会话列表返回并展示持久状态快照：业务标题、更新时间、最后 intent/route、工单号和人工状态",
+    "passes": true,
+    "check": "pytest tests/test_api.py::test_sessions_include_persistent_status_snapshot tests/test_security.py::test_chat_frontend_renders_session_snapshots"
+  },
+  {
+    "id": "F031",
+    "category": "product",
+    "description": "会话队列支持关键词搜索和按待人工、有工单、RAG 已回答、需澄清等状态筛选",
+    "passes": true,
+    "check": "pytest tests/test_security.py::test_chat_frontend_filters_session_queue"
+  },
+  {
+    "id": "F032",
+    "category": "rag",
+    "description": "答案生成按用户问题对证据句排序，优先返回最相关句子，减少命中文档后仍答偏的问题",
+    "passes": true,
+    "check": "pytest tests/test_graph.py::test_answer_prioritizes_relevant_sentences_within_retrieved_docs && python evals/run_eval.py"
+  }
+]
