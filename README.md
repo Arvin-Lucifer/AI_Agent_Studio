@@ -9,6 +9,7 @@
 - `shared/notebooks/`：实验笔记与快速验证
 - `shared/utils/`：通用辅助脚本
 - `teaching_support/`：教辅资料入口，索引课程规范、依赖和运行脚本
+- `apps/agent_course_studio/`：网页版 Agent 开发课程实验室
 - `requirements/`：按主题拆分的依赖文件
 - `scripts/`：环境初始化与健康检查脚本
 - `COURSE_ALIGNMENT_REVIEW.md`：章节主题与老师目录对齐记录
@@ -67,6 +68,23 @@ cp .env.example .env
 python scripts/check_env.py
 python scripts/smoke_openai.py
 ```
+
+## 网页版课程实验室
+
+本仓库提供一个轻量网页版学习工作台，可按章节浏览讲义、实战、面试题和资源，并支持本地课程搜索。
+
+```bash
+python3 apps/agent_course_studio/build_course_data.py
+python3 apps/agent_course_studio/server.py --host 127.0.0.1 --port 8765
+```
+
+打开：
+
+```text
+http://127.0.0.1:8765
+```
+
+详细说明见 `apps/agent_course_studio/README.md`。
 
 ## 建议学习节奏
 

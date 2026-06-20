@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agent Course Studio</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <canvas id="flowCanvas" aria-hidden="true"></canvas>
+
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="课程导航">
+        <div class="brand">
+          <div class="brand-mark">AC</div>
+          <div>
+            <div class="brand-title">Agent Course Studio</div>
+            <div class="brand-subtitle">Agent 开发课程实验室</div>
+          </div>
+        </div>
+
+        <label class="search-box">
+          <span>搜索</span>
+          <input id="globalSearch" type="search" placeholder="RAG、MCP、Skill、回滚..." autocomplete="off" />
+        </label>
+
+        <nav id="lessonNav" class="lesson-nav"></nav>
+      </aside>
+
+      <main class="main">
+        <section class="hero-panel">
+          <div class="hero-copy">
+            <p class="eyebrow">从 ChatBot 到可部署 Agent</p>
+            <h1 id="courseTitle">Agent Course Studio</h1>
+            <p id="courseDescription" class="hero-description">
+              正在加载课程内容...
+            </p>
+          </div>
+          <div id="courseStats" class="stats-grid" aria-label="课程统计"></div>
+        </section>
+
+        <section class="workspace">
+          <div class="lesson-header">
+            <div>
+              <p id="lessonCode" class="eyebrow">L01</p>
+              <h2 id="lessonTitle">加载中</h2>
+              <p id="lessonIntro" class="lesson-intro"></p>
+            </div>
+            <div class="lesson-actions">
+              <button id="toggleDone" class="primary-action" type="button">标记完成</button>
+              <button id="copyCommand" class="secondary-action" type="button">复制运行命令</button>
+            </div>
+          </div>
+
+          <div id="topicPills" class="topic-pills"></div>
+
+          <div class="tabs" role="tablist" aria-label="章节内容">
+            <button class="tab active" data-tab="overview" type="button">概览</button>
+            <button class="tab" data-tab="lecture" type="button">讲义</button>
+            <button class="tab" data-tab="practice" type="button">实战</button>
+            <button class="tab" data-tab="trace" type="button">图谱</button>
+            <button class="tab" data-tab="interview" type="button">面试</button>
+            <button class="tab" data-tab="resources" type="button">资源</button>
+          </div>
+
+          <section id="tabContent" class="tab-content" aria-live="polite"></section>
+        </section>
+      </main>
+
+      <aside class="inspector" aria-label="学习助手">
+        <section class="panel">
+          <div class="panel-title-row">
+            <h2>本地课程助手</h2>
+            <span id="assistantMode" class="status-pill">检索式</span>
+          </div>
+          <p class="muted">
+            基于课程索引回答，不调用外部模型；回答会附上引用来源。
+          </p>
+          <textarea id="assistantQuestion" rows="4" placeholder="例如：RAG 面试重点有哪些？"></textarea>
+          <button id="askButton" class="primary-action wide" type="button">查询课程资料</button>
+          <div id="assistantAnswer" class="assistant-answer"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title-row">
+            <h2>搜索结果</h2>
+            <span id="searchCount" class="status-pill">0</span>
+          </div>
+          <div id="searchResults" class="search-results"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title-row">
+            <h2>实验运行</h2>
+            <span id="runnerStatus" class="status-pill">检测中</span>
+          </div>
+          <p class="muted">
+            真实运行默认关闭；开启后也只执行白名单章节脚本。
+          </p>
+          <button id="runLesson" class="secondary-action wide" type="button">运行本章一键脚本</button>
+          <pre id="runOutput" class="run-output">等待操作。</pre>
+        </section>
+      </aside>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="./data/course_boot.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
