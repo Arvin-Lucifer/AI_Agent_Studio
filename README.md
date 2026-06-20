@@ -7,7 +7,7 @@
 ![Lessons](https://img.shields.io/badge/Lessons-12-C2410C)
 ![License](https://img.shields.io/badge/Use-Teaching%20%26%20Practice-B7791F)
 
-![Agent Course Roadmap](docs/assets/course-roadmap.svg)
+![Agent Course Roadmap](docs/assets/course-roadmap.png)
 
 ## What This Repo Contains
 
@@ -31,7 +31,7 @@
 - 浏览器本地学习进度记录。
 - 白名单实验运行接口，默认关闭真实执行。
 
-![Studio Architecture](docs/assets/studio-architecture.svg)
+![Studio Architecture](docs/assets/studio-architecture.png)
 
 ### Start The Studio
 
@@ -58,7 +58,7 @@ http://127.0.0.1:8765
 | Systems & Protocols | L07-L09 | Memory、Agent 模式、MCP 工具生态 |
 | Production | L10-L12 | Skill、评测部署、智能客服毕业项目 |
 
-![Capability Matrix](docs/assets/capability-matrix.svg)
+![Capability Matrix](docs/assets/capability-matrix.png)
 
 ## Lesson Structure
 
