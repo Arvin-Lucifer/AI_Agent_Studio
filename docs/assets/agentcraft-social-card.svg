@@ -1,0 +1,49 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">AgentCraft Studio 2026</title>
+  <desc id="desc">AI Agent development forge with 12 lessons, an interactive Studio, and an intelligent customer Agent showcase.</desc>
+  <rect width="1200" height="630" rx="34" fill="#F7F5EF"/>
+  <rect x="38" y="38" width="1124" height="554" rx="28" fill="#17202A"/>
+  <rect x="74" y="74" width="72" height="72" rx="14" fill="#FFFDF8"/>
+  <text x="92" y="121" fill="#17202A" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="900">AC</text>
+  <text x="166" y="108" fill="#FFFDF8" font-family="Inter,Arial,sans-serif" font-size="31" font-weight="900">AgentCraft Studio 2026</text>
+  <text x="166" y="139" fill="#A7B0B8" font-family="Inter,Arial,sans-serif" font-size="17">AI Agent Development Forge</text>
+
+  <text x="74" y="244" fill="#FFFDF8" font-family="Inter,Arial,sans-serif" font-size="64" font-weight="900">把 Agent 知识练成</text>
+  <text x="74" y="322" fill="#FFFDF8" font-family="Inter,Arial,sans-serif" font-size="64" font-weight="900">可交付工程作品</text>
+  <text x="78" y="374" fill="#DDE6EA" font-family="Inter,Arial,sans-serif" font-size="22">12 章路线 · 交互式 Studio · 面试题库 · 智能客服 Agent Showcase</text>
+
+  <g font-family="Inter,Arial,sans-serif" font-size="16" font-weight="800">
+    <rect x="78" y="430" width="104" height="38" rx="19" fill="#D9F1ED"/>
+    <text x="104" y="455" fill="#0F766E">Prompt</text>
+    <rect x="194" y="430" width="156" height="38" rx="19" fill="#FBE7D9"/>
+    <text x="221" y="455" fill="#C2410C">Function Calling</text>
+    <rect x="362" y="430" width="72" height="38" rx="19" fill="#ECF2FF"/>
+    <text x="384" y="455" fill="#2556A3">RAG</text>
+    <rect x="446" y="430" width="102" height="38" rx="19" fill="#FFF7EA"/>
+    <text x="473" y="455" fill="#B7791F">Memory</text>
+    <rect x="78" y="484" width="78" height="38" rx="19" fill="#D9F1ED"/>
+    <text x="103" y="509" fill="#0F766E">MCP</text>
+    <rect x="168" y="484" width="80" height="38" rx="19" fill="#FBE7D9"/>
+    <text x="192" y="509" fill="#C2410C">Skill</text>
+    <rect x="260" y="484" width="112" height="38" rx="19" fill="#ECF2FF"/>
+    <text x="287" y="509" fill="#2556A3">Evaluate</text>
+    <rect x="384" y="484" width="106" height="38" rx="19" fill="#FFF7EA"/>
+    <text x="412" y="509" fill="#B7791F">Deploy</text>
+  </g>
+
+  <g font-family="Inter,Arial,sans-serif">
+    <rect x="774" y="92" width="326" height="260" rx="20" fill="#FFFDF8"/>
+    <text x="806" y="135" fill="#17202A" font-size="22" font-weight="900">L12 Graduation Project</text>
+    <text x="806" y="171" fill="#46515D" font-size="16">智能客服 Agent</text>
+    <rect x="806" y="206" width="248" height="22" rx="11" fill="#D9F1ED"/>
+    <rect x="806" y="244" width="198" height="22" rx="11" fill="#FBE7D9"/>
+    <rect x="806" y="282" width="276" height="22" rx="11" fill="#ECF2FF"/>
+    <text x="806" y="335" fill="#0F766E" font-size="16" font-weight="900">LangGraph · RAG · FastAPI · Eval</text>
+
+    <rect x="802" y="404" width="298" height="82" rx="16" fill="#101820" stroke="#30424D"/>
+    <text x="824" y="436" fill="#D9F1ED" font-size="15">$ python3 scripts/build_public_site.py</text>
+    <text x="824" y="465" fill="#F7C9B6" font-size="15">/studio/ · /showcase/</text>
+  </g>
+
+  <text x="78" y="558" fill="#A7B0B8" font-family="Inter,Arial,sans-serif" font-size="17">arvin-lucifer.github.io/agent_course_2026</text>
+</svg>

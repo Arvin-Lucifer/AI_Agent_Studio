@@ -5,6 +5,7 @@ const state = {
   done: new Set(JSON.parse(localStorage.getItem("agentCourseDone") || "[]")),
   runnerEnabled: false,
   docCache: new Map(),
+  theme: localStorage.getItem("agentCraftTheme") || "light",
 };
 
 const els = {
@@ -28,6 +29,8 @@ const els = {
   runnerStatus: document.querySelector("#runnerStatus"),
   runLesson: document.querySelector("#runLesson"),
   runOutput: document.querySelector("#runOutput"),
+  progressSummary: document.querySelector("#progressSummary"),
+  themeToggle: document.querySelector("#themeToggle"),
   toast: document.querySelector("#toast"),
 };
 
@@ -115,6 +118,7 @@ const COVERAGE = [
 document.addEventListener("DOMContentLoaded", init);
 
 async function init() {
+  applyTheme(state.theme);
   animateCanvas();
   state.data = window.AGENT_COURSE_DATA || (await loadCourseData());
   applyHashRoute();
@@ -145,6 +149,7 @@ function bindEvents() {
   els.copyCommand.addEventListener("click", copyCurrentCommand);
   els.askButton.addEventListener("click", answerQuestion);
   els.runLesson.addEventListener("click", runCurrentLesson);
+  els.themeToggle?.addEventListener("click", toggleTheme);
 }
 
 function renderShell() {
@@ -177,9 +182,40 @@ function renderShell() {
       </div>
     `
   ).join("");
+  renderProgressSummary();
   renderNav();
+  syncTabs();
   renderLesson();
   renderSearch("");
+}
+
+function renderProgressSummary() {
+  if (!els.progressSummary || !state.data?.lessons?.length) return;
+  const lessons = state.data.lessons;
+  const completed = lessons.filter((lesson) => state.done.has(lesson.id)).length;
+  const percent = Math.round((completed / lessons.length) * 100);
+  const next = lessons.find((lesson) => !state.done.has(lesson.id)) || lessons[lessons.length - 1];
+  els.progressSummary.innerHTML = `
+    <div class="panel-title-row">
+      <h2>学习进度</h2>
+      <span class="status-pill">${completed}/${lessons.length}</span>
+    </div>
+    <div class="progress-track" aria-label="完成率 ${percent}%"><i style="width:${percent}%"></i></div>
+    <p class="muted">${completed === lessons.length ? "已完成全部章节，可以进入 L12 答辩复盘。" : `下一站：${escapeHtml(next.code)} · ${escapeHtml(trimTitle(next.title))}`}</p>
+    <div class="progress-actions">
+      <button class="secondary-action" data-go-next="${escapeAttr(next.id)}" type="button">继续学习</button>
+      <button class="secondary-action" data-export-report type="button">导出报告</button>
+    </div>
+  `;
+  els.progressSummary.querySelector("[data-go-next]")?.addEventListener("click", (event) => {
+    state.currentLessonId = event.currentTarget.dataset.goNext;
+    state.currentTab = "overview";
+    syncTabs();
+    updateHash();
+    renderNav();
+    renderLesson();
+  });
+  els.progressSummary.querySelector("[data-export-report]")?.addEventListener("click", exportLearningReport);
 }
 
 function renderNav() {
@@ -239,6 +275,7 @@ async function renderLesson() {
     lecture: renderLecture,
     practice: renderPractice,
     trace: renderTrace,
+    challenge: renderChallenge,
     interview: renderInterview,
     resources: renderResources,
   };
@@ -253,6 +290,7 @@ async function renderLesson() {
 
 function renderOverview(lesson) {
   return `
+    ${renderGraduationShowcase(lesson)}
     <div class="content-grid">
       <section class="content-block">
         <h3>学习目标</h3>
@@ -276,6 +314,29 @@ function renderOverview(lesson) {
         ${renderCommand(lesson.preclassCommand || "本章暂无一键脚本")}
       </section>
     </div>
+  `;
+}
+
+function renderGraduationShowcase(lesson) {
+  if (lesson.code !== "L12") return "";
+  return `
+    <section class="project-showcase">
+      <div>
+        <p class="eyebrow">Graduation Project</p>
+        <h3>智能客服 Agent 展示台</h3>
+        <p class="muted">这一章不是 demo，而是把 LangGraph 状态机、RAG、工单工具、人工兜底、FastAPI、前端客服台和评测脚本串成可答辩工程。</p>
+      </div>
+      <div class="project-showcase-grid">
+        <article><strong>架构闭环</strong><span>状态机、检索、记忆、工具和兜底节点清晰分层。</span></article>
+        <article><strong>运行闭环</strong><span>知识库构建、API 服务、客服台和 Dashboard 可本地演示。</span></article>
+        <article><strong>质量闭环</strong><span>测试、评测、日志和 bad case 回流都能被复现。</span></article>
+        <article><strong>答辩闭环</strong><span>能讲清选型、边界、失败模式和后续迭代。</span></article>
+      </div>
+      <div class="showcase-actions">
+        <button class="primary-action" data-tab-target="practice" type="button">查看运行路径</button>
+        <button class="secondary-action" data-tab-target="interview" type="button">打开答辩题库</button>
+      </div>
+    </section>
   `;
 }
 
@@ -335,10 +396,84 @@ async function renderTrace(lesson) {
   `;
 }
 
+async function renderChallenge(lesson) {
+  const quizDoc = findDoc(lesson, "quiz");
+  const quizContent = quizDoc ? await loadDocContent(quizDoc) : "";
+  const qaPairs = extractQuizPairs(quizContent);
+  const flow = FLOW_LIBRARY[lesson.code] || FLOW_LIBRARY.L01;
+  const challengeCards = qaPairs.slice(0, 8).map(
+    (item, index) => `
+      <article class="question-card">
+        <span class="question-index">Q${index + 1}</span>
+        <h3>${escapeHtml(item.question)}</h3>
+        <details>
+          <summary>查看参考思路</summary>
+          <p>${escapeHtml(item.answer || "先尝试用自己的话回答，再回到讲义和总结里补充定义、边界和工程取舍。")}</p>
+        </details>
+      </article>
+    `
+  );
+  return `
+    <section class="challenge-hero">
+      <div>
+        <p class="eyebrow">${escapeHtml(lesson.code)} · Practice Loop</p>
+        <h3>本章挑战台</h3>
+        <p class="muted">把“看过”变成“能说清、能跑通、能交付”：先完成小测，再按验收检查复盘本章工程链路。</p>
+      </div>
+      <div class="challenge-score">
+        <strong>${qaPairs.length || flow.checks.length}</strong>
+        <span>可练习问题</span>
+      </div>
+    </section>
+    <div class="content-grid" style="margin-top:12px">
+      <section class="content-block">
+        <h3>本章验收</h3>
+        ${renderList(flow.checks)}
+      </section>
+      <section class="content-block">
+        <h3>建议节奏</h3>
+        ${renderList(["先不看答案完成 3-5 题。", "打开图谱页复述主流程。", "最后回到实战页运行脚本或阅读关键代码。"])}
+      </section>
+    </div>
+    <section class="question-grid" style="margin-top:12px">
+      ${challengeCards.length ? challengeCards.join("") : empty("本章暂无小测题，建议查看拓展作业和章节总结。")}
+    </section>
+  `;
+}
+
 async function renderInterview(lesson) {
   const doc = findDoc(lesson, "interview");
   if (!doc) return empty("本章暂未整理独立面试题，建议查看章节总结和拓展作业。");
-  return renderMarkdownDoc(doc, await loadDocContent(doc));
+  const content = await loadDocContent(doc);
+  const questions = extractInterviewQuestions(content).slice(0, 8);
+  const deck = questions.length
+    ? `
+      <section class="interview-deck">
+        <div>
+          <p class="eyebrow">${escapeHtml(lesson.code)} · Interview Drill</p>
+          <h3>面试抽题台</h3>
+          <p class="muted">每题先用 60 秒回答，再按“定义 -> 工程取舍 -> 风险边界 -> 落地验证”的结构补全。</p>
+        </div>
+        <div class="interview-card-grid">
+          ${questions
+            .map(
+              (question, index) => `
+                <article class="question-card compact">
+                  <span class="question-index">${String(index + 1).padStart(2, "0")}</span>
+                  <h3>${escapeHtml(question)}</h3>
+                  <details>
+                    <summary>答题结构</summary>
+                    <p>先给一句话定义，再讲适用场景、失败模式、安全/成本边界，最后结合本章实践代码收束。</p>
+                  </details>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
+      </section>
+    `
+    : "";
+  return deck + renderMarkdownDoc(doc, content);
 }
 
 async function renderResources(lesson) {
@@ -431,6 +566,14 @@ function bindDynamicButtons() {
   document.querySelectorAll(".copy-inline").forEach((button) => {
     button.addEventListener("click", () => copyText(button.dataset.copy || ""));
   });
+  document.querySelectorAll("[data-tab-target]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.currentTab = button.dataset.tabTarget;
+      syncTabs();
+      updateHash();
+      renderLesson();
+    });
+  });
 }
 
 function findDoc(lesson, key) {
@@ -443,6 +586,7 @@ function countDocs(lesson, keys) {
 
 function renderSearch(query) {
   const hits = search(query);
+  const terms = searchTerms(query);
   els.searchCount.textContent = hits.length;
   els.searchResults.innerHTML =
     hits.length === 0
@@ -453,7 +597,7 @@ function renderSearch(query) {
             (hit) => `
               <div class="search-hit">
                 <button data-lesson="${escapeAttr(hit.lesson.id)}" type="button">${escapeHtml(hit.lesson.code)} · ${escapeHtml(trimTitle(hit.lesson.title))}</button>
-                <p>${escapeHtml(hit.reason)}</p>
+                <p>${highlightSnippet(hit.reason, terms)}</p>
               </div>
             `
           )
@@ -470,9 +614,8 @@ function renderSearch(query) {
 }
 
 function search(query) {
-  const q = normalize(query);
-  if (!q) return [];
-  const terms = q.split(/\s+/).filter(Boolean);
+  const terms = searchTerms(query);
+  if (!terms.length) return [];
   return state.data.lessons
     .map((lesson) => {
       const corpus = normalize([lesson.title, lesson.intro, lesson.topics.join(" "), lesson.searchText].join(" "));
@@ -490,6 +633,28 @@ function search(query) {
     })
     .filter((hit) => hit.score > 0)
     .sort((a, b) => b.score - a.score);
+}
+
+function searchTerms(query) {
+  return normalize(query).split(/\s+/).filter(Boolean);
+}
+
+function highlightSnippet(text, terms) {
+  let snippet = String(text || "").slice(0, 180);
+  if (String(text || "").length > snippet.length) snippet += "...";
+  let html = escapeHtml(snippet);
+  terms
+    .filter((term) => term.length > 1)
+    .slice(0, 5)
+    .forEach((term) => {
+      const pattern = new RegExp(`(${escapeRegExp(escapeHtml(term))})`, "gi");
+      html = html.replace(pattern, "<mark>$1</mark>");
+    });
+  return html;
+}
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function answerQuestion() {
@@ -558,6 +723,35 @@ function findBestDoc(lesson, query) {
     .sort((a, b) => b.score - a.score)[0]?.doc;
 }
 
+function extractQuizPairs(markdown) {
+  if (!markdown) return [];
+  const [questionPart, answerPart = ""] = markdown.split(/##\s*参考答案/);
+  const questions = extractNumberedItems(questionPart);
+  const answers = extractNumberedItems(answerPart);
+  return questions.map((question, index) => ({
+    question,
+    answer: answers[index] || "",
+  }));
+}
+
+function extractNumberedItems(markdown) {
+  return markdown
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => line.match(/^\d+\.\s+(.+)$/)?.[1])
+    .filter(Boolean);
+}
+
+function extractInterviewQuestions(markdown) {
+  const questions = [];
+  markdown.split("\n").forEach((line) => {
+    const match = line.trim().match(/^###\s+(?:\d+[.、]\s*)?(.+)$/);
+    if (match?.[1]) questions.push(match[1].trim());
+  });
+  return questions;
+}
+
 function toggleDone() {
   const lesson = currentLesson();
   if (!lesson) return;
@@ -567,6 +761,7 @@ function toggleDone() {
     state.done.add(lesson.id);
   }
   localStorage.setItem("agentCourseDone", JSON.stringify([...state.done]));
+  renderProgressSummary();
   renderNav();
   renderLesson();
 }
@@ -579,6 +774,54 @@ function copyCurrentCommand() {
 function copyText(text) {
   if (!text) return;
   navigator.clipboard.writeText(text).then(() => showToast("已复制"));
+}
+
+function toggleTheme() {
+  state.theme = state.theme === "dark" ? "light" : "dark";
+  localStorage.setItem("agentCraftTheme", state.theme);
+  applyTheme(state.theme);
+}
+
+function applyTheme(theme) {
+  document.body.dataset.theme = theme === "dark" ? "dark" : "light";
+  if (els.themeToggle) {
+    els.themeToggle.textContent = theme === "dark" ? "浅色" : "深色";
+  }
+}
+
+function exportLearningReport() {
+  const lessons = state.data?.lessons || [];
+  const completed = lessons.filter((lesson) => state.done.has(lesson.id));
+  const next = lessons.find((lesson) => !state.done.has(lesson.id));
+  const lines = [
+    "# AgentCraft Studio 学习报告",
+    "",
+    `生成时间：${new Date().toLocaleString()}`,
+    `完成进度：${completed.length}/${lessons.length}`,
+    next ? `下一章：${next.code} · ${trimTitle(next.title)}` : "下一章：全部章节已完成，建议进入 L12 答辩复盘。",
+    "",
+    "## 章节状态",
+    "",
+    "| 章节 | 状态 | 主题 |",
+    "| --- | --- | --- |",
+    ...lessons.map((lesson) => `| ${lesson.code} ${trimTitle(lesson.title)} | ${state.done.has(lesson.id) ? "已完成" : "待完成"} | ${lesson.topics.slice(0, 3).join(" / ")} |`),
+    "",
+    "## 复盘建议",
+    "",
+    "- 每完成一章，先用图谱复述主流程。",
+    "- 用挑战台做 3-5 道题，再打开面试页整理表达。",
+    "- L12 重点准备架构闭环、质量门禁、失败模式和后续迭代。",
+    "",
+  ];
+  const blob = new Blob([lines.join("\n")], { type: "text/markdown;charset=utf-8" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `agentcraft-learning-report-${new Date().toISOString().slice(0, 10)}.md`;
+  document.body.appendChild(link);
+  link.click();
+  URL.revokeObjectURL(link.href);
+  link.remove();
+  showToast("学习报告已导出");
 }
 
 async function checkRunner() {
@@ -801,11 +1044,13 @@ function showToast(message) {
 function applyHashRoute() {
   const raw = decodeURIComponent(location.hash.replace(/^#/, ""));
   if (!raw) return;
-  const [lessonId, tab] = raw.split(/[/:]/);
+  const separator = raw.lastIndexOf("/");
+  const lessonId = separator >= 0 ? raw.slice(0, separator) : raw;
+  const tab = separator >= 0 ? raw.slice(separator + 1) : "";
   if (lessonId && state.data?.lessons?.some((lesson) => lesson.id === lessonId)) {
     state.currentLessonId = lessonId;
   }
-  if (tab && ["overview", "lecture", "practice", "trace", "interview", "resources"].includes(tab)) {
+  if (tab && ["overview", "lecture", "practice", "trace", "challenge", "interview", "resources"].includes(tab)) {
     state.currentTab = tab;
   }
 }

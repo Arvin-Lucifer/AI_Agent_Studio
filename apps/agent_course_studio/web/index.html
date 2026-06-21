@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Agent Course Studio</title>
+    <title>AgentCraft Studio</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -14,10 +14,12 @@
         <div class="brand">
           <div class="brand-mark">AC</div>
           <div>
-            <div class="brand-title">Agent Course Studio</div>
-            <div class="brand-subtitle">Agent 开发课程实验室</div>
+            <div class="brand-title">AgentCraft Studio</div>
+            <div class="brand-subtitle">Agent 开发实战工作台</div>
           </div>
         </div>
+
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="切换深浅主题">深色</button>
 
         <label class="search-box">
           <span>搜索</span>
@@ -31,7 +33,7 @@
         <section class="studio-header">
           <div class="studio-copy">
             <p class="eyebrow">Agent Development Learning Lab</p>
-            <h1 id="courseTitle">Agent Course Studio</h1>
+            <h1 id="courseTitle">AgentCraft Studio</h1>
             <p id="courseDescription" class="studio-description">正在加载课程内容...</p>
           </div>
           <div class="studio-dashboard">
@@ -67,6 +69,7 @@
             <button class="tab" data-tab="lecture" type="button">讲义</button>
             <button class="tab" data-tab="practice" type="button">实战</button>
             <button class="tab" data-tab="trace" type="button">图谱</button>
+            <button class="tab" data-tab="challenge" type="button">挑战</button>
             <button class="tab" data-tab="interview" type="button">面试</button>
             <button class="tab" data-tab="resources" type="button">资源</button>
           </div>
@@ -76,6 +79,15 @@
       </main>
 
       <aside class="inspector" aria-label="学习助手">
+        <section id="progressSummary" class="panel progress-panel" aria-label="学习进度">
+          <div class="panel-title-row">
+            <h2>学习进度</h2>
+            <span class="status-pill">0/12</span>
+          </div>
+          <div class="progress-track" aria-label="完成率 0%"><i style="width:0%"></i></div>
+          <p class="muted">从 L01 开始建立 Agent 基础，再一路推进到毕业项目。</p>
+        </section>
+
         <section class="panel">
           <div class="panel-title-row">
             <h2>本地课程助手</h2>

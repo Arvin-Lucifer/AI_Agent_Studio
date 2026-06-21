@@ -26,6 +26,7 @@ COURSE_JSON = ROOT / "apps" / "agent_course_studio" / "web" / "data" / "course.j
 README = ROOT / "README.md"
 DOCS_INDEX = ROOT / "docs" / "index.html"
 STUDIO_INDEX = ROOT / "docs" / "studio" / "index.html"
+SHOWCASE_INDEX = ROOT / "docs" / "showcase" / "index.html"
 ROBOTS_TXT = ROOT / "docs" / "robots.txt"
 SITEMAP_XML = ROOT / "docs" / "sitemap.xml"
 
@@ -50,7 +51,18 @@ FORBIDDEN_PATTERNS = [
 ]
 
 SCAN_EXTENSIONS = {".md", ".py", ".js", ".json", ".html", ".css", ".svg", ".yml", ".yaml", ".txt"}
-SCAN_DIRS = ["README.md", "WEB_COURSE_PRODUCT_PLAN.md", "apps", "docs", "lessons", "teaching_support", "requirements", "scripts", ".github"]
+SCAN_DIRS = [
+    "README.md",
+    "AGENTCRAFT_STUDIO_PLAN.md",
+    "LAUNCH_KIT.md",
+    "apps",
+    "docs",
+    "lessons",
+    "teaching_support",
+    "requirements",
+    "scripts",
+    ".github",
+]
 SKIP_PARTS = {"__pycache__", ".git", "rag_index", ".pytest_cache"}
 
 
@@ -102,16 +114,18 @@ def check_lesson_readmes() -> None:
 
 
 def check_public_site() -> None:
-    for path in [DOCS_INDEX, STUDIO_INDEX, ROBOTS_TXT, SITEMAP_XML]:
+    for path in [DOCS_INDEX, STUDIO_INDEX, SHOWCASE_INDEX, ROBOTS_TXT, SITEMAP_XML]:
         if not path.exists():
             fail(f"{path.relative_to(ROOT)} is missing")
     readme = README.read_text(encoding="utf-8")
     docs_index = DOCS_INDEX.read_text(encoding="utf-8")
     for image in [
         "docs/assets/course-roadmap.png",
+        "docs/assets/agentcraft-social-card.png",
         "docs/assets/studio-architecture.png",
         "docs/assets/capability-matrix.png",
         "docs/assets/site-preview.png",
+        "docs/assets/showcase-preview.png",
         "docs/assets/studio-preview.png",
     ]:
         if image not in readme:
@@ -121,6 +135,10 @@ def check_public_site() -> None:
     for local_ref in ["assets/course-roadmap.png", "assets/studio-architecture.png", "assets/capability-matrix.png"]:
         if local_ref not in docs_index:
             fail(f"docs/index.html does not reference {local_ref}")
+    if "showcase/" not in docs_index:
+        fail("docs/index.html does not link to the graduation project showcase")
+    if "showcase/" not in SITEMAP_XML.read_text(encoding="utf-8"):
+        fail("docs/sitemap.xml does not include the graduation project showcase")
     print("[OK] public site files")
 
 

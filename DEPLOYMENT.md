@@ -1,6 +1,6 @@
 # Deployment
 
-This project is designed to publish a static public website and a static Agent Course Studio through GitHub Pages.
+This project is designed to publish a static public website and a static AgentCraft Studio through GitHub Pages.
 
 ## Local Preview
 
@@ -21,6 +21,7 @@ Open:
 ```text
 http://127.0.0.1:8780
 http://127.0.0.1:8780/studio/
+http://127.0.0.1:8780/showcase/
 ```
 
 ## GitHub Pages
@@ -48,6 +49,7 @@ The final URL is controlled by GitHub Pages. For this repository it is expected 
 ```text
 https://arvin-lucifer.github.io/agent_course_2026/
 https://arvin-lucifer.github.io/agent_course_2026/studio/
+https://arvin-lucifer.github.io/agent_course_2026/showcase/
 ```
 
 If a custom domain is configured later, add it in GitHub Pages settings and update the repository About URL.
@@ -66,7 +68,7 @@ git diff --check
 
 ## Notes
 
-- `docs/index.html`, `docs/site.css`, `docs/studio/`, and `docs/assets/favicon.svg` are generated build outputs and are ignored by Git.
+- `docs/index.html`, `docs/site.css`, `docs/studio/`, `docs/showcase/`, and `docs/assets/favicon.svg` are generated build outputs and are ignored by Git.
 - `docs/robots.txt` and `docs/sitemap.xml` are generated build outputs and are ignored by Git.
 - `docs/assets/*.png` and `docs/assets/*.svg` diagrams are source assets used by README and the public site.
 - The static Studio runs in safe static mode; it does not execute local scripts.

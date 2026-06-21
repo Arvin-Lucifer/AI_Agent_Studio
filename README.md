@@ -1,12 +1,18 @@
-# Agent Course 2026
+# AgentCraft Studio 2026
 
-面向 **AI Agent 开发学习、工程实践、面试准备和毕业项目展示** 的完整课程工作区。仓库覆盖从 Agent 基础认知、Prompt、Function Calling、LangChain、RAG、Memory、MCP、Skill，到评测部署和智能客服毕业项目的完整路径，并配套一个可运行的网页版课程实验室。
+面向 **AI Agent 开发学习、工程实践、面试准备和毕业项目展示** 的实战工作台。仓库覆盖从 Agent 基础认知、Prompt、Function Calling、LangChain、RAG、Memory、MCP、Skill，到评测部署和智能客服毕业项目的完整路径，并配套可运行的网页版 AgentCraft Studio。
+
+[公开首页](https://arvin-lucifer.github.io/agent_course_2026/) ·
+[进入 Studio](https://arvin-lucifer.github.io/agent_course_2026/studio/) ·
+[查看 L12 Showcase](https://arvin-lucifer.github.io/agent_course_2026/showcase/)
 
 ![Python](https://img.shields.io/badge/Python-3.11+-2556A3)
-![Agent](https://img.shields.io/badge/Agent-Course%20Studio-0F766E)
+![Agent](https://img.shields.io/badge/AgentCraft-Studio-0F766E)
 ![Lessons](https://img.shields.io/badge/Lessons-12-C2410C)
 ![Pages](https://img.shields.io/badge/GitHub%20Pages-ready-B7791F)
 ![License](https://img.shields.io/badge/Use-Teaching%20%26%20Practice-B7791F)
+
+![AgentCraft Studio social card](docs/assets/agentcraft-social-card.png)
 
 ![Agent Course Roadmap](docs/assets/course-roadmap.png)
 
@@ -15,19 +21,21 @@
 | 模块 | 内容 |
 | --- | --- |
 | `lessons/L01-L12` | 12 章课程材料：讲义、总结、课前清单、小测、拓展作业、面试题、实践代码 |
-| `apps/agent_course_studio` | 网页版 Agent 开发课程实验室 |
-| `docs` | README 图表资产；运行构建脚本后生成 GitHub Pages 官网和静态 Studio |
+| `apps/agent_course_studio` | 网页版 AgentCraft Studio 实战工作台 |
+| `docs` | README 图表资产；运行构建脚本后生成 GitHub Pages 公开首页和静态 Studio |
 | `teaching_support` | 教辅资料：BM25、Agent 设计模式、常见设计模式、AI Native 工作方式、外部学习资源 |
 | `requirements` | 按主题拆分的依赖文件 |
 | `scripts` | 环境激活、依赖安装、模型连通性检查 |
-| `WEB_COURSE_PRODUCT_PLAN.md` | 网页课程实验室产品计划和实施路线 |
+| `AGENTCRAFT_STUDIO_PLAN.md` | AgentCraft Studio 实施计划和迭代路线 |
+| `LAUNCH_KIT.md` | 对外发布资料：仓库 About、分享文案、演示脚本和上线动作 |
 
-## Public Website
+## Public Site
 
 本仓库已经准备好公开发布形态。运行 `scripts/build_public_site.py` 后会生成：
 
-- `docs/index.html`：面向外部用户的课程产品首页。
-- `docs/studio/`：可静态托管的 Agent Course Studio。
+- `docs/index.html`：面向外部用户的公开首页。
+- `docs/studio/`：可静态托管的 AgentCraft Studio。
+- `docs/showcase/`：L12 智能客服 Agent 公开项目展示页。
 - `docs/robots.txt` 和 `docs/sitemap.xml`：搜索引擎抓取入口。
 - `.github/workflows/pages.yml`：GitHub Pages 自动部署工作流。
 - `.github/workflows/quality.yml`：课程数据、公开站点、敏感信息和语法检查。
@@ -45,25 +53,30 @@ python3 -m http.server 8780 --directory docs
 http://127.0.0.1:8780
 ```
 
-## Product Preview
+## Experience Preview
 
-公开首页聚焦课程路径、学习价值和项目入口，适合作为 GitHub Pages 的第一屏展示。
+公开首页聚焦学习路径、工程价值和项目入口，适合作为 GitHub Pages 的第一屏展示。
 
 ![Public site preview](docs/assets/site-preview.png)
 
-Studio 是面向学习者的交互式课程工作台，把章节、讲义、实战、面试题、资源和本地课程助手放在同一个界面里。
+L12 项目展示页把智能客服 Agent 的架构、运行链路、答辩要点和本地运行入口收束成一个可直接分享的作品页。
 
-![Agent Course Studio preview](docs/assets/studio-preview.png)
+![L12 showcase preview](docs/assets/showcase-preview.png)
 
-## Agent Course Studio
+Studio 是面向学习者的交互式实战工作台，把章节、讲义、实战、挑战、面试题、资源和本地课程助手放在同一个界面里。
 
-`Agent Course Studio` 是本仓库的可视化学习入口。它不是普通文档站，而是一个本地优先的课程工作台：
+![AgentCraft Studio preview](docs/assets/studio-preview.png)
+
+## AgentCraft Studio
+
+`AgentCraft Studio` 是本仓库的可视化学习入口。它不是普通文档站，而是一个本地优先的 Agent 开发实战工作台：
 
 - 12 章课程路径导航。
-- 讲义、实战、面试、资源统一展示。
+- 讲义、实战、挑战、面试、资源统一展示。
 - 本地搜索和引用式课程助手。
 - 每章 Agent 开发图谱。
 - 浏览器本地学习进度记录。
+- 章节小测挑战和面试抽题台。
 - 白名单实验运行接口，默认关闭真实执行。
 
 ![Studio Architecture](docs/assets/studio-architecture.png)
@@ -194,6 +207,12 @@ L12 是端到端毕业项目：**智能客服 Agent**。
 lessons/L12_graduation_project/
 ```
 
+公开展示页：
+
+```text
+https://arvin-lucifer.github.io/agent_course_2026/showcase/
+```
+
 ## Safety Notes
 
 - 密钥只放在 `.env` 中，仓库只保留 `.env.example`。
@@ -203,12 +222,13 @@ lessons/L12_graduation_project/
 
 ## Project Governance
 
-- [Roadmap](./ROADMAP.md)：公开发布、学习闭环、评测和产品化路线。
+- [Roadmap](./ROADMAP.md)：公开发布、学习闭环、评测和长期演进路线。
 - [Changelog](./CHANGELOG.md)：重要版本和能力更新。
 - [Contributing](./CONTRIBUTING.md)：内容、代码和提交规范。
 - [Security](./SECURITY.md)：密钥、runner 和公开站点安全边界。
 - [Deployment](./DEPLOYMENT.md)：GitHub Pages 和本地预览发布说明。
 - [Public Launch Checklist](./PUBLIC_LAUNCH_CHECKLIST.md)：对外分享前检查表。
+- [Launch Kit](./LAUNCH_KIT.md)：GitHub About、分享话术、演示脚本和发布动作。
 
 ## Maintainer Workflow
 
@@ -222,7 +242,7 @@ python3 scripts/build_public_site.py
 
 ```bash
 python3 scripts/validate_project.py
-python3 -m py_compile apps/agent_course_studio/build_course_data.py apps/agent_course_studio/server.py
+python3 -m py_compile apps/agent_course_studio/build_course_data.py apps/agent_course_studio/server.py scripts/build_public_site.py scripts/validate_project.py
 node --check apps/agent_course_studio/web/app.js
 git diff --check
 ```

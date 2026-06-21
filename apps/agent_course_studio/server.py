@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Local server for Agent Course Studio.
+"""Local server for AgentCraft Studio.
 
 The server intentionally stays small: it serves the static web app and exposes a
 single optional whitelist runner endpoint. Real command execution is disabled by
@@ -157,7 +157,7 @@ def scrub_output(text: str) -> str:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Serve Agent Course Studio locally.")
+    parser = argparse.ArgumentParser(description="Serve AgentCraft Studio locally.")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
@@ -166,7 +166,7 @@ def main() -> None:
         load_course_data()
 
     httpd = ThreadingHTTPServer((args.host, args.port), StudioHandler)
-    print(f"[OK] Agent Course Studio: http://{args.host}:{args.port}")
+    print(f"[OK] AgentCraft Studio: http://{args.host}:{args.port}")
     print(f"[OK] Runner enabled: {runner_enabled()}")
     httpd.serve_forever()
 

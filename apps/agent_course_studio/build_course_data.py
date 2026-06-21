@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the static data file used by Agent Course Studio.
+"""Build the static data file used by AgentCraft Studio.
 
 The builder treats the existing lesson folders as the source of truth. It reads
 Markdown and practice files, extracts a compact manifest, and writes one JSON
@@ -289,11 +289,12 @@ def collect_support_docs() -> list[dict[str, str]]:
     return docs
 
 
-def content_version(stats: dict, lessons: list[dict], support_docs: list[dict[str, str]]) -> str:
+def content_version(stats: dict, lessons: list[dict], support_docs: list[dict[str, str]], course: dict[str, str]) -> str:
     """Return a stable short hash for generated public course data."""
     payload = json.dumps(
         {
             "stats": stats,
+            "course": course,
             "lessons": lessons,
             "supportDocs": support_docs,
         },
@@ -313,14 +314,15 @@ def build() -> dict:
         "interviewCount": sum(1 for lesson in lessons for doc in lesson["docs"] if doc["key"] == "interview"),
         "fileCount": sum(lesson["fileCount"] for lesson in lessons),
     }
+    course = {
+        "name": "AgentCraft Studio",
+        "subtitle": "AI Agent 开发实战工作台",
+        "description": "从 Agent 基础、Prompt、Function Calling、LangChain、RAG、Memory、MCP、Skill，到评测部署和智能客服毕业项目，把知识练成可交付作品。",
+    }
     return {
         "schemaVersion": 1,
-        "contentVersion": content_version(stats, lessons, support_docs),
-        "course": {
-            "name": "Agent Course Studio",
-            "subtitle": "面向 Agent 开发学习的课程实验室",
-            "description": "从 Agent 基础、Prompt、Function Calling、LangChain、RAG、Memory、MCP、Skill，到评测部署和毕业项目的完整学习路径。",
-        },
+        "contentVersion": content_version(stats, lessons, support_docs, course),
+        "course": course,
         "stats": stats,
         "lessons": lessons,
         "supportDocs": support_docs,

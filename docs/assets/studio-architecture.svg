@@ -1,8 +1,8 @@
 <svg width="1180" height="500" viewBox="0 0 1180 500" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">Agent Course Studio Architecture</title>
+  <title id="title">AgentCraft Studio Architecture</title>
   <desc id="desc">Content source, build pipeline, static web studio and optional local runner.</desc>
   <rect width="1180" height="500" rx="24" fill="#101820"/>
-  <text x="42" y="56" fill="#FFFDF8" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="800">Agent Course Studio Architecture</text>
+  <text x="42" y="56" fill="#FFFDF8" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="800">AgentCraft Studio Architecture</text>
   <text x="42" y="86" fill="#A7B0B8" font-family="Inter,Arial,sans-serif" font-size="15">Content-source driven, local-first, runner-safe.</text>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">

@@ -1,8 +1,8 @@
-# Agent Course Studio 产品与实施计划
+# AgentCraft Studio 实施计划
 
-## 一、产品定位
+## 一、定位
 
-`Agent Course Studio` 是面向 Agent 开发学习的课程实验室。它不是普通文档站，而是把 `lessons/L01-L12` 中已经整理好的讲义、代码、面试题、拓展作业和毕业项目，组织成一个可浏览、可搜索、可演示、可继续接入实验运行和课程问答的网页产品。
+`AgentCraft Studio` 是面向 Agent 开发学习的实战工作台。它不是普通文档站，而是把 `lessons/L01-L12` 中已经整理好的讲义、代码、面试题、拓展作业和毕业项目，组织成一个可浏览、可搜索、可演示、可继续接入实验运行和课程问答的网页入口。
 
 核心目标：
 
@@ -53,12 +53,13 @@
 
 ## 三、功能分层
 
-### Phase 1：静态课程实验室
+### Phase 1：静态实战工作台
 
 第一阶段先完成不依赖外部服务的稳定版本：
 
 - 公开官网，面向 GitHub Pages / Vercel 等静态托管。
 - 静态版 Studio，导出到 `docs/studio/`。
+- L12 项目展示页，导出到 `docs/showcase/`。
 - 课程首页和 12 章课程路径。
 - 每章内容页：概览、讲义、实战、面试题、资源。
 - 全局本地搜索。
@@ -141,6 +142,7 @@ docs/
   index.html
   site.css
   studio/
+  showcase/
 scripts/
   build_public_site.py
   validate_project.py
@@ -148,6 +150,7 @@ scripts/
   workflows/
     quality.yml
     pages.yml
+LAUNCH_KIT.md
 ```
 
 说明：
@@ -156,7 +159,7 @@ scripts/
 - `apps/agent_course_studio/web/data/` 是生成物，可以随课程更新重新生成。
 - `course.json` 提供索引，`course_boot.js` 提供首屏同步数据，`docs/` 提供按需加载的 Markdown 文档。
 - `docs/assets/` 保存 README 和公开站点共用图表资产。
-- `docs/index.html`、`docs/site.css` 和 `docs/studio/` 是公开站点构建产物，由 `scripts/build_public_site.py` 生成，并由 GitHub Actions 发布。
+- `docs/index.html`、`docs/site.css`、`docs/studio/` 和 `docs/showcase/` 是公开站点构建产物，由 `scripts/build_public_site.py` 生成，并由 GitHub Actions 发布。
 - 前端不修改课程原始 Markdown，只负责展示和检索。
 
 ## 六、页面信息架构
@@ -211,7 +214,7 @@ scripts/
 
 ### 功能验收
 
-- 能打开课程实验室首页。
+- 能打开实战工作台首页。
 - 能展示 L01-L12 全部章节。
 - 每章能看到讲义、实战、面试、资源等核心信息。
 - 每章能看到本章 Agent 开发图谱。
@@ -231,21 +234,23 @@ scripts/
 
 ### 文档验收
 
-- 根 README 有课程实验室入口。
+- 根 README 有实战工作台入口。
 - App README 有运行、构建、安全说明。
 - ROADMAP、CHANGELOG、CONTRIBUTING、SECURITY 和公开发布检查表完整。
-- 产品计划记录完整，便于后续迭代。
+- 实施计划记录完整，便于后续迭代。
 
 ### 发布验收
 
 - `docs/index.html` 能作为公开官网打开。
 - `docs/studio/index.html` 能以静态模式打开 Studio。
+- `docs/showcase/index.html` 能作为 L12 项目展示页打开。
+- README、Launch Kit 和 GitHub About 能形成一致的对外表达。
 - GitHub Actions 能运行质量检查。
 - GitHub Pages 工作流能发布 `docs/`。
 
 ## 九、当前实施顺序
 
-1. 新建产品计划。
+1. 新建实施计划。
 2. 新建 `apps/agent_course_studio`。
 3. 编写课程数据构建脚本。
 4. 生成 `course.json`。
@@ -257,4 +262,5 @@ scripts/
 9. 做安全扫描与最终审计。
 10. 生成公开官网和静态 Studio。
 11. 增加质量门禁和 Pages 部署工作流。
-12. 补齐产品化治理文档。
+12. 补齐公开发布治理文档。
+13. 补齐 Launch Kit、L12 Showcase 和对外分享入口。

@@ -5,8 +5,11 @@ Use this checklist before sharing the repository or public website.
 ## Content
 
 - [ ] Root README explains the course value in under one minute.
+- [ ] README top links point to the public site, Studio and L12 Showcase.
+- [ ] `LAUNCH_KIT.md` has the current About text, topics, share copy and demo script.
 - [ ] Public website opens from `docs/index.html`.
 - [ ] Static Studio opens from `docs/studio/index.html`.
+- [ ] Graduation project showcase opens from `docs/showcase/index.html`.
 - [ ] `docs/robots.txt` and `docs/sitemap.xml` are generated.
 - [ ] L01-L12 all have learning goals, recommended path, quick run and deliverables.
 - [ ] L12 graduation project has a clear demo story and acceptance checklist.
@@ -30,5 +33,7 @@ Use this checklist before sharing the repository or public website.
 
 - [ ] GitHub Pages source is set to `docs/`, or a GitHub Actions Pages workflow is enabled.
 - [ ] README images render on GitHub.
+- [ ] `/showcase/` is reachable from the public homepage and tells a clear project story.
 - [ ] Public URL is added to the GitHub repository About section.
+- [ ] Repository Topics are added from `LAUNCH_KIT.md`.
 - [ ] A short demo video or screenshots are prepared for sharing.

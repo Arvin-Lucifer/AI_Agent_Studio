@@ -6,7 +6,7 @@
 
 - [ ] Course content
 - [ ] Practice code
-- [ ] Agent Course Studio
+- [ ] AgentCraft Studio
 - [ ] Public website / docs
 - [ ] Tests / validation / CI
 
