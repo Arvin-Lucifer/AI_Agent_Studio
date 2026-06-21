@@ -23,3 +23,11 @@ lessons/L12_graduation_project/reference_implementation/intelligent_customer_age
 
 # Local generated notebooks/checkpoints
 shared/notebooks/.ipynb_checkpoints/
+
+# Public site build output. GitHub Actions regenerates these before Pages deploy.
+docs/index.html
+docs/site.css
+docs/studio/
+docs/assets/favicon.svg
+docs/robots.txt
+docs/sitemap.xml

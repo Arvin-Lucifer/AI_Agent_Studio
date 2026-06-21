@@ -582,6 +582,11 @@ function copyText(text) {
 }
 
 async function checkRunner() {
+  if (window.AGENT_COURSE_STATIC_EXPORT) {
+    state.runnerEnabled = false;
+    els.runnerStatus.textContent = "静态模式";
+    return;
+  }
   try {
     const res = await fetch("/api/health");
     if (!res.ok) throw new Error("static mode");

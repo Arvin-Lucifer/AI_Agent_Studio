@@ -1,6 +1,6 @@
 window.AGENT_COURSE_DATA = {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-20T07:06:55.460854+00:00",
+  "contentVersion": "b751fb12a08508a8",
   "course": {
     "name": "Agent Course Studio",
     "subtitle": "面向 Agent 开发学习的课程实验室",

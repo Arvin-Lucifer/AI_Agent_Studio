@@ -11,8 +11,8 @@ from __future__ import annotations
 import json
 import re
 import shutil
+import hashlib
 from dataclasses import dataclass
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
@@ -289,6 +289,20 @@ def collect_support_docs() -> list[dict[str, str]]:
     return docs
 
 
+def content_version(stats: dict, lessons: list[dict], support_docs: list[dict[str, str]]) -> str:
+    """Return a stable short hash for generated public course data."""
+    payload = json.dumps(
+        {
+            "stats": stats,
+            "lessons": lessons,
+            "supportDocs": support_docs,
+        },
+        ensure_ascii=False,
+        sort_keys=True,
+    )
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
+
+
 def build() -> dict:
     lessons = [collect_lesson(path) for path in sorted(LESSONS_DIR.glob("L*_*")) if path.is_dir()]
     support_docs = collect_support_docs()
@@ -301,7 +315,7 @@ def build() -> dict:
     }
     return {
         "schemaVersion": 1,
-        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "contentVersion": content_version(stats, lessons, support_docs),
         "course": {
             "name": "Agent Course Studio",
             "subtitle": "面向 Agent 开发学习的课程实验室",

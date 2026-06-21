@@ -1,0 +1,51 @@
+name: Quality
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Build Studio and public site
+        run: python3 scripts/build_public_site.py
+
+      - name: Validate project structure and public assets
+        run: python3 scripts/validate_project.py
+
+      - name: Check JavaScript syntax
+        run: node --check apps/agent_course_studio/web/app.js
+
+      - name: Check Python syntax
+        run: |
+          python3 -m py_compile \
+            apps/agent_course_studio/build_course_data.py \
+            apps/agent_course_studio/server.py \
+            scripts/build_public_site.py \
+            scripts/validate_project.py
+
+      - name: Check generated Studio data is committed
+        run: |
+          git diff --exit-code -- \
+            apps/agent_course_studio/web/data/course.json \
+            apps/agent_course_studio/web/data/course_boot.js \
+            apps/agent_course_studio/web/data/docs
+
+      - name: Check whitespace
+        run: git diff --check

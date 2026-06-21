@@ -28,6 +28,28 @@ python3 apps/agent_course_studio/server.py --host 127.0.0.1 --port 8765
 http://127.0.0.1:8765
 ```
 
+## 静态公开版
+
+公开网站使用 `docs/` 目录发布，其中 `docs/studio/` 是本应用的静态导出版本。它保留课程导航、讲义、搜索、课程助手和学习进度，但不会调用本地 runner API。
+
+从仓库根目录生成公开站点：
+
+```bash
+python3 scripts/build_public_site.py
+```
+
+本地预览：
+
+```bash
+python3 -m http.server 8780 --directory docs
+```
+
+入口：
+
+```text
+http://127.0.0.1:8780/studio/
+```
+
 ## 重新生成课程索引
 
 当 `lessons/` 下的讲义、面试题、资源或实践脚本发生变化时，重新执行：
@@ -74,6 +96,15 @@ AGENT_COURSE_STUDIO_RUN_TIMEOUT_SEC=300
 - 跳过 `.env`、缓存目录、生成索引和运行态数据。
 
 网页不读取 `.env`，也不会展示本地代理脚本内容。
+
+## 发布前检查
+
+```bash
+python3 scripts/build_public_site.py
+python3 scripts/validate_project.py
+node --check apps/agent_course_studio/web/app.js
+python3 -m py_compile apps/agent_course_studio/build_course_data.py apps/agent_course_studio/server.py scripts/build_public_site.py scripts/validate_project.py
+```
 
 ## 后续升级方向
 

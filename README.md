@@ -5,6 +5,7 @@
 ![Python](https://img.shields.io/badge/Python-3.11+-2556A3)
 ![Agent](https://img.shields.io/badge/Agent-Course%20Studio-0F766E)
 ![Lessons](https://img.shields.io/badge/Lessons-12-C2410C)
+![Pages](https://img.shields.io/badge/GitHub%20Pages-ready-B7791F)
 ![License](https://img.shields.io/badge/Use-Teaching%20%26%20Practice-B7791F)
 
 ![Agent Course Roadmap](docs/assets/course-roadmap.png)
@@ -15,10 +16,44 @@
 | --- | --- |
 | `lessons/L01-L12` | 12 章课程材料：讲义、总结、课前清单、小测、拓展作业、面试题、实践代码 |
 | `apps/agent_course_studio` | 网页版 Agent 开发课程实验室 |
+| `docs` | README 图表资产；运行构建脚本后生成 GitHub Pages 官网和静态 Studio |
 | `teaching_support` | 教辅资料：BM25、Agent 设计模式、常见设计模式、AI Native 工作方式、外部学习资源 |
 | `requirements` | 按主题拆分的依赖文件 |
 | `scripts` | 环境激活、依赖安装、模型连通性检查 |
 | `WEB_COURSE_PRODUCT_PLAN.md` | 网页课程实验室产品计划和实施路线 |
+
+## Public Website
+
+本仓库已经准备好公开发布形态。运行 `scripts/build_public_site.py` 后会生成：
+
+- `docs/index.html`：面向外部用户的课程产品首页。
+- `docs/studio/`：可静态托管的 Agent Course Studio。
+- `docs/robots.txt` 和 `docs/sitemap.xml`：搜索引擎抓取入口。
+- `.github/workflows/pages.yml`：GitHub Pages 自动部署工作流。
+- `.github/workflows/quality.yml`：课程数据、公开站点、敏感信息和语法检查。
+
+本地预览公开站点：
+
+```bash
+python3 scripts/build_public_site.py
+python3 -m http.server 8780 --directory docs
+```
+
+打开：
+
+```text
+http://127.0.0.1:8780
+```
+
+## Product Preview
+
+公开首页聚焦课程路径、学习价值和项目入口，适合作为 GitHub Pages 的第一屏展示。
+
+![Public site preview](docs/assets/site-preview.png)
+
+Studio 是面向学习者的交互式课程工作台，把章节、讲义、实战、面试题、资源和本地课程助手放在同一个界面里。
+
+![Agent Course Studio preview](docs/assets/studio-preview.png)
 
 ## Agent Course Studio
 
@@ -166,17 +201,27 @@ lessons/L12_graduation_project/
 - 网页实验运行默认关闭，开启后也只运行课程白名单脚本。
 - 课程代码应包含必要教学注释，关键模块遵循 `CODE_COMMENTING_GUIDE.md`。
 
+## Project Governance
+
+- [Roadmap](./ROADMAP.md)：公开发布、学习闭环、评测和产品化路线。
+- [Changelog](./CHANGELOG.md)：重要版本和能力更新。
+- [Contributing](./CONTRIBUTING.md)：内容、代码和提交规范。
+- [Security](./SECURITY.md)：密钥、runner 和公开站点安全边界。
+- [Deployment](./DEPLOYMENT.md)：GitHub Pages 和本地预览发布说明。
+- [Public Launch Checklist](./PUBLIC_LAUNCH_CHECKLIST.md)：对外分享前检查表。
+
 ## Maintainer Workflow
 
-课程内容更新后，重新生成 Studio 数据：
+课程内容更新后，重新生成 Studio 数据和公开站点：
 
 ```bash
-python3 apps/agent_course_studio/build_course_data.py
+python3 scripts/build_public_site.py
 ```
 
 提交前建议运行：
 
 ```bash
+python3 scripts/validate_project.py
 python3 -m py_compile apps/agent_course_studio/build_course_data.py apps/agent_course_studio/server.py
 node --check apps/agent_course_studio/web/app.js
 git diff --check

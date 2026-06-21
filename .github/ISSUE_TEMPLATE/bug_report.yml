@@ -1,0 +1,44 @@
+name: Bug Report
+description: Report a broken script, incorrect page, or unexpected runtime behavior.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve Agent Course 2026. Please avoid sharing API keys, local absolute paths, or private data in the report.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe the broken behavior and what you expected instead.
+      placeholder: The L05 preclass script fails when...
+    validations:
+      required: true
+  - type: input
+    id: lesson
+    attributes:
+      label: Related lesson or module
+      placeholder: L05 RAG / Agent Course Studio / public site
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Include the command or page path if possible.
+      placeholder: |
+        1. Run ...
+        2. Open ...
+        3. See ...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: Python 3.11, conda env agent_course, browser/version, OS
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Remove secrets and private local paths before posting.
+      render: shell

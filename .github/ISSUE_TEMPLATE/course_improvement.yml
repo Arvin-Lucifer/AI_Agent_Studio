@@ -1,0 +1,43 @@
+name: Course Improvement
+description: Suggest a lesson, practice, interview question, or teaching asset improvement.
+title: "[Course] "
+labels: ["course", "enhancement"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Improvement area
+      options:
+        - Lecture content
+        - Practice code
+        - Interview Q&A
+        - Assignment or extension
+        - Agent Course Studio
+        - Public website
+        - Teaching support material
+    validations:
+      required: true
+  - type: input
+    id: lesson
+    attributes:
+      label: Related lesson
+      placeholder: L02 Prompt / L10 Skill / L12 Graduation Project
+  - type: textarea
+    id: current
+    attributes:
+      label: Current issue
+      description: What is missing, unclear, outdated, or hard to use?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed improvement
+      description: Describe the desired outcome, not only the implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Optional links, screenshots, or examples. Do not include private course data unless you have permission.

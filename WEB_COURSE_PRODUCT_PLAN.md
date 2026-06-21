@@ -9,6 +9,7 @@
 - 让学生按章节路径学习 Agent 开发，不需要在文件树里来回找材料。
 - 让老师能够用网页授课，快速切换讲义、实操、作业、面试题和资源。
 - 让课程仓库从“资料集合”升级为“可展示的 Agent 学习作品”。
+- 让陌生用户先通过公开官网理解课程价值，再进入静态 Studio 试用。
 - 保留未来扩展空间：代码实验台、课程 RAG 助手、LangGraph/L12 过程可视化和在线评测。
 
 ## 二、目标用户与典型场景
@@ -42,12 +43,22 @@
 - 让面试官快速看到课程覆盖范围、工程质量和安全意识。
 - 作为后续部署到 GitHub Pages / 自有服务器的作品主页。
 
+### 4. 公开传播
+
+外部用户第一次打开项目时，可以先进入 `docs/index.html`：
+
+- 用一分钟理解课程定位、路线和最终项目。
+- 点击进入静态版 Studio，无需本地安装即可浏览课程。
+- 再根据需要 clone 仓库，运行本地 runner 和课程脚本。
+
 ## 三、功能分层
 
 ### Phase 1：静态课程实验室
 
 第一阶段先完成不依赖外部服务的稳定版本：
 
+- 公开官网，面向 GitHub Pages / Vercel 等静态托管。
+- 静态版 Studio，导出到 `docs/studio/`。
 - 课程首页和 12 章课程路径。
 - 每章内容页：概览、讲义、实战、面试题、资源。
 - 全局本地搜索。
@@ -97,6 +108,8 @@
 - 生成轻量 manifest、同步 boot 数据和按需加载 Markdown 文档，保证首屏速度和静态部署稳定性。
 - 前端使用原生 HTML/CSS/JS，便于 GitHub Pages 或任意静态服务器托管。
 - 本地服务使用标准库 `http.server`，额外提供受控运行 API。
+- `scripts/build_public_site.py` 统一生成 Studio 数据、公开官网和静态 Studio。
+- `scripts/validate_project.py` 统一检查课程结构、图片引用、SVG 合法性和敏感信息。
 
 ### 后续可升级策略
 
@@ -123,6 +136,18 @@ apps/
       data/course.json
       data/course_boot.js
       data/docs/
+docs/
+  assets/
+  index.html
+  site.css
+  studio/
+scripts/
+  build_public_site.py
+  validate_project.py
+.github/
+  workflows/
+    quality.yml
+    pages.yml
 ```
 
 说明：
@@ -130,6 +155,8 @@ apps/
 - `lessons/` 继续作为唯一课程内容源。
 - `apps/agent_course_studio/web/data/` 是生成物，可以随课程更新重新生成。
 - `course.json` 提供索引，`course_boot.js` 提供首屏同步数据，`docs/` 提供按需加载的 Markdown 文档。
+- `docs/assets/` 保存 README 和公开站点共用图表资产。
+- `docs/index.html`、`docs/site.css` 和 `docs/studio/` 是公开站点构建产物，由 `scripts/build_public_site.py` 生成，并由 GitHub Actions 发布。
 - 前端不修改课程原始 Markdown，只负责展示和检索。
 
 ## 六、页面信息架构
@@ -206,7 +233,15 @@ apps/
 
 - 根 README 有课程实验室入口。
 - App README 有运行、构建、安全说明。
+- ROADMAP、CHANGELOG、CONTRIBUTING、SECURITY 和公开发布检查表完整。
 - 产品计划记录完整，便于后续迭代。
+
+### 发布验收
+
+- `docs/index.html` 能作为公开官网打开。
+- `docs/studio/index.html` 能以静态模式打开 Studio。
+- GitHub Actions 能运行质量检查。
+- GitHub Pages 工作流能发布 `docs/`。
 
 ## 九、当前实施顺序
 
@@ -220,3 +255,6 @@ apps/
 7. 更新 README。
 8. 启动服务验证。
 9. 做安全扫描与最终审计。
+10. 生成公开官网和静态 Studio。
+11. 增加质量门禁和 Pages 部署工作流。
+12. 补齐产品化治理文档。
