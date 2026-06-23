@@ -7,7 +7,7 @@
 [查看 L12 Showcase](https://arvin-lucifer.github.io/agent_course_2026/showcase/)
 
 ![Python](https://img.shields.io/badge/Python-3.11+-2556A3)
-![Agent](https://img.shields.io/badge/AI-Agent-Studio-0F766E)
+![AI Agent Studio](https://img.shields.io/badge/AI%20Agent-Studio-0F766E)
 ![Lessons](https://img.shields.io/badge/Lessons-12-C2410C)
 ![Pages](https://img.shields.io/badge/GitHub%20Pages-ready-B7791F)
 ![License](https://img.shields.io/badge/Use-Teaching%20%26%20Practice-B7791F)
