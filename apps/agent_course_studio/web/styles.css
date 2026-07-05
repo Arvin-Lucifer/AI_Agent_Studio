@@ -137,9 +137,13 @@ body[data-theme="dark"] .studio-header {
   height: 40px;
   border-radius: 7px;
   background: var(--ink);
-  color: #fffdf8;
-  font-weight: 800;
-  letter-spacing: 0;
+  overflow: hidden;
+}
+
+.brand-mark img {
+  display: block;
+  width: 40px;
+  height: 40px;
 }
 
 .brand-title {

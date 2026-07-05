@@ -140,8 +140,8 @@ def check_public_site() -> None:
     readme = README.read_text(encoding="utf-8")
     docs_index = DOCS_INDEX.read_text(encoding="utf-8")
     for image in [
+        "docs/assets/ai-agent-studio-brand-card.png",
         "docs/assets/course-roadmap.png",
-        "docs/assets/ai-agent-studio-social-card.png",
         "docs/assets/studio-architecture.png",
         "docs/assets/capability-matrix.png",
         "docs/assets/site-preview.png",
@@ -150,6 +150,13 @@ def check_public_site() -> None:
     ]:
         if image not in readme:
             fail(f"README does not reference {image}")
+        if not (ROOT / image).exists():
+            fail(f"{image} is missing")
+    for image in [
+        "docs/assets/ai-agent-studio-social-card.png",
+        "docs/assets/ai-agent-studio-mark.svg",
+        "docs/assets/favicon.svg",
+    ]:
         if not (ROOT / image).exists():
             fail(f"{image} is missing")
     for local_ref in ["assets/course-roadmap.png", "assets/studio-architecture.png", "assets/capability-matrix.png"]:

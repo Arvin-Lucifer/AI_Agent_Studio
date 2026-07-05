@@ -1,0 +1,12 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">AI Agent Studio mark</title>
+  <desc id="desc">A compact AI wordmark with connected agent workflow nodes.</desc>
+  <rect x="8" y="8" width="112" height="112" rx="24" fill="#17202A"/>
+  <path d="M80 36L96 52L82 70L102 92" stroke="#D9F1ED" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="80" cy="36" r="8" fill="#FBE7D9" stroke="#17202A" stroke-width="4"/>
+  <circle cx="96" cy="52" r="8" fill="#D9F1ED" stroke="#17202A" stroke-width="4"/>
+  <circle cx="82" cy="70" r="8" fill="#ECF2FF" stroke="#17202A" stroke-width="4"/>
+  <circle cx="102" cy="92" r="8" fill="#FFF7EA" stroke="#17202A" stroke-width="4"/>
+  <path d="M28 92L43 36H57L72 92H58L55 80H44L41 92H28ZM47 66H52L50 56L47 66Z" fill="#FFFDF8"/>
+  <rect x="75" y="86" width="11" height="6" rx="3" fill="#C2410C"/>
+</svg>

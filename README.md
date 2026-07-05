@@ -12,7 +12,7 @@
 ![Pages](https://img.shields.io/badge/GitHub%20Pages-ready-B7791F)
 ![License](https://img.shields.io/badge/Use-Teaching%20%26%20Practice-B7791F)
 
-![AI Agent Studio social card](docs/assets/ai-agent-studio-social-card.png)
+![AI Agent Studio brand card](docs/assets/ai-agent-studio-brand-card.png)
 
 ![AI Agent Studio Roadmap](docs/assets/course-roadmap.png)
 

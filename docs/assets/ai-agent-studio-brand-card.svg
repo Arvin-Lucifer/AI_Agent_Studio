@@ -1,0 +1,47 @@
+<svg width="1200" height="420" viewBox="0 0 1200 420" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">AI Agent Studio README brand card</title>
+  <desc id="desc">A concise branded banner for AI Agent Studio.</desc>
+  <rect width="1200" height="420" rx="28" fill="#F7F5EF"/>
+  <rect x="34" y="34" width="1132" height="352" rx="24" fill="#17202A"/>
+  <rect x="74" y="74" width="104" height="104" rx="24" fill="#FFFDF8"/>
+  <g transform="translate(86 86) scale(0.62)">
+    <rect x="8" y="8" width="112" height="112" rx="24" fill="#17202A"/>
+    <path d="M80 36L96 52L82 70L102 92" stroke="#D9F1ED" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="80" cy="36" r="8" fill="#FBE7D9" stroke="#17202A" stroke-width="4"/>
+    <circle cx="96" cy="52" r="8" fill="#D9F1ED" stroke="#17202A" stroke-width="4"/>
+    <circle cx="82" cy="70" r="8" fill="#ECF2FF" stroke="#17202A" stroke-width="4"/>
+    <circle cx="102" cy="92" r="8" fill="#FFF7EA" stroke="#17202A" stroke-width="4"/>
+    <path d="M28 92L43 36H57L72 92H58L55 80H44L41 92H28ZM47 66H52L50 56L47 66Z" fill="#FFFDF8"/>
+    <rect x="75" y="86" width="11" height="6" rx="3" fill="#C2410C"/>
+  </g>
+  <text x="208" y="112" fill="#FFFDF8" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="900">AI Agent Studio</text>
+  <text x="210" y="150" fill="#A7B0B8" font-family="Inter,Arial,sans-serif" font-size="18">Agent engineering learning workspace</text>
+  <text x="76" y="244" fill="#FFFDF8" font-family="Inter,Arial,sans-serif" font-size="48" font-weight="900">AI Agent 工程实战工作台</text>
+  <text x="80" y="292" fill="#DDE6EA" font-family="Inter,Arial,sans-serif" font-size="22">Learn · Build · Evaluate · Ship</text>
+  <g font-family="Inter,Arial,sans-serif" font-size="15" font-weight="800">
+    <rect x="78" y="322" width="96" height="34" rx="17" fill="#D9F1ED"/>
+    <text x="101" y="344" fill="#0F766E">Prompt</text>
+    <rect x="186" y="322" width="70" height="34" rx="17" fill="#ECF2FF"/>
+    <text x="210" y="344" fill="#2556A3">RAG</text>
+    <rect x="268" y="322" width="92" height="34" rx="17" fill="#FFF7EA"/>
+    <text x="295" y="344" fill="#B7791F">Memory</text>
+    <rect x="372" y="322" width="76" height="34" rx="17" fill="#FBE7D9"/>
+    <text x="396" y="344" fill="#C2410C">MCP</text>
+    <rect x="460" y="322" width="72" height="34" rx="17" fill="#D9F1ED"/>
+    <text x="483" y="344" fill="#0F766E">Skill</text>
+    <rect x="544" y="322" width="84" height="34" rx="17" fill="#ECF2FF"/>
+    <text x="568" y="344" fill="#2556A3">Eval</text>
+  </g>
+  <g font-family="Inter,Arial,sans-serif">
+    <rect x="810" y="82" width="292" height="228" rx="18" fill="#FFFDF8"/>
+    <text x="842" y="125" fill="#17202A" font-size="22" font-weight="900">12 Lessons</text>
+    <text x="842" y="158" fill="#46515D" font-size="15">Studio · Showcase · Interview QA</text>
+    <path d="M850 230L904 198L954 234L1026 188" stroke="#D9F1ED" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="850" cy="230" r="12" fill="#FBE7D9"/>
+    <circle cx="904" cy="198" r="12" fill="#D9F1ED"/>
+    <circle cx="954" cy="234" r="12" fill="#ECF2FF"/>
+    <circle cx="1026" cy="188" r="12" fill="#FFF7EA"/>
+    <rect x="810" y="330" width="292" height="32" rx="16" fill="#101820" stroke="#30424D"/>
+    <text x="842" y="352" fill="#F7C9B6" font-size="14">AI_Agent_Studio</text>
+  </g>
+</svg>

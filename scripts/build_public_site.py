@@ -116,7 +116,7 @@ def write_public_home(data: dict) -> None:
   <body>
     <header class="site-nav">
       <a class="brand" href="./" aria-label="AI Agent Studio home">
-        <span>AI</span>
+        <span class="brand-symbol" aria-hidden="true"><img src="assets/ai-agent-studio-mark.svg" alt="" /></span>
         <strong>AI Agent Studio</strong>
       </a>
       <nav aria-label="Primary">
@@ -279,7 +279,7 @@ def write_project_showcase(data: dict) -> None:
   <body>
     <header class="site-nav">
       <a class="brand" href="../" aria-label="AI Agent Studio home">
-        <span>AI</span>
+        <span class="brand-symbol" aria-hidden="true"><img src="../assets/ai-agent-studio-mark.svg" alt="" /></span>
         <strong>AI Agent Studio</strong>
       </a>
       <nav aria-label="Primary">
@@ -457,7 +457,7 @@ a {
   font-weight: 800;
 }
 
-.brand span {
+.brand-symbol {
   display: grid;
   place-items: center;
   width: 36px;
@@ -465,6 +465,12 @@ a {
   border-radius: 7px;
   background: var(--ink);
   color: #fffdf8;
+}
+
+.brand-symbol img {
+  width: 36px;
+  height: 36px;
+  display: block;
 }
 
 .site-nav nav {
@@ -1051,8 +1057,14 @@ def write_branch_root_fallbacks() -> None:
 def write_favicon() -> None:
     ASSETS_DIR.mkdir(parents=True, exist_ok=True)
     favicon = """<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="64" height="64" rx="14" fill="#17202A"/>
-  <text x="18" y="40" fill="#FFFDF8" font-family="Arial,sans-serif" font-size="24" font-weight="800">AI</text>
+  <rect x="4" y="4" width="56" height="56" rx="13" fill="#17202A"/>
+  <path d="M40 18L48 26L41 35L51 46" stroke="#D9F1ED" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="40" cy="18" r="4" fill="#FBE7D9" stroke="#17202A" stroke-width="2"/>
+  <circle cx="48" cy="26" r="4" fill="#D9F1ED" stroke="#17202A" stroke-width="2"/>
+  <circle cx="41" cy="35" r="4" fill="#ECF2FF" stroke="#17202A" stroke-width="2"/>
+  <circle cx="51" cy="46" r="4" fill="#FFF7EA" stroke="#17202A" stroke-width="2"/>
+  <path d="M14 46L21.5 18H28.5L36 46H29L27.5 40H22L20.5 46H14ZM23.5 33H26L25 28L23.5 33Z" fill="#FFFDF8"/>
+  <rect x="37" y="43" width="6" height="3" rx="1.5" fill="#C2410C"/>
 </svg>
 """
     (ASSETS_DIR / "favicon.svg").write_text(favicon, encoding="utf-8")

@@ -1,49 +1,60 @@
 <svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">AI Agent Studio</title>
-  <desc id="desc">AI Agent engineering workspace with 12 lessons, an interactive Studio, and an intelligent customer Agent showcase.</desc>
+  <title id="title">AI Agent Studio social card</title>
+  <desc id="desc">A branded social preview for AI Agent Studio, an engineering workspace for learning and shipping AI Agents.</desc>
   <rect width="1200" height="630" rx="34" fill="#F7F5EF"/>
-  <rect x="38" y="38" width="1124" height="554" rx="28" fill="#17202A"/>
-  <rect x="74" y="74" width="72" height="72" rx="14" fill="#FFFDF8"/>
-  <text x="92" y="121" fill="#17202A" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="900">AI</text>
-  <text x="166" y="108" fill="#FFFDF8" font-family="Inter,Arial,sans-serif" font-size="31" font-weight="900">AI Agent Studio</text>
-  <text x="166" y="139" fill="#A7B0B8" font-family="Inter,Arial,sans-serif" font-size="17">AI Agent Engineering Workspace</text>
+  <rect x="44" y="44" width="1112" height="542" rx="28" fill="#17202A"/>
+  <rect x="74" y="74" width="104" height="104" rx="24" fill="#FFFDF8"/>
+  <g transform="translate(86 86) scale(0.62)">
+    <rect x="8" y="8" width="112" height="112" rx="24" fill="#17202A"/>
+    <path d="M80 36L96 52L82 70L102 92" stroke="#D9F1ED" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="80" cy="36" r="8" fill="#FBE7D9" stroke="#17202A" stroke-width="4"/>
+    <circle cx="96" cy="52" r="8" fill="#D9F1ED" stroke="#17202A" stroke-width="4"/>
+    <circle cx="82" cy="70" r="8" fill="#ECF2FF" stroke="#17202A" stroke-width="4"/>
+    <circle cx="102" cy="92" r="8" fill="#FFF7EA" stroke="#17202A" stroke-width="4"/>
+    <path d="M28 92L43 36H57L72 92H58L55 80H44L41 92H28ZM47 66H52L50 56L47 66Z" fill="#FFFDF8"/>
+    <rect x="75" y="86" width="11" height="6" rx="3" fill="#C2410C"/>
+  </g>
+  <text x="206" y="112" fill="#FFFDF8" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="900">AI Agent Studio</text>
+  <text x="208" y="146" fill="#A7B0B8" font-family="Inter,Arial,sans-serif" font-size="18">Agent Engineering Learning Workspace</text>
 
-  <text x="74" y="244" fill="#FFFDF8" font-family="Inter,Arial,sans-serif" font-size="64" font-weight="900">AI Agent 工程</text>
-  <text x="74" y="322" fill="#FFFDF8" font-family="Inter,Arial,sans-serif" font-size="64" font-weight="900">实战工作台</text>
-  <text x="78" y="374" fill="#DDE6EA" font-family="Inter,Arial,sans-serif" font-size="22">系统学习 · 代码实战 · 面试准备 · 智能客服 Agent Showcase</text>
+  <text x="74" y="280" fill="#FFFDF8" font-family="Inter,Arial,sans-serif" font-size="62" font-weight="900">AI Agent 工程实战工作台</text>
+  <text x="78" y="332" fill="#DDE6EA" font-family="Inter,Arial,sans-serif" font-size="22">系统学习 · 代码实战 · 面试准备 · 智能客服 Agent Showcase</text>
 
   <g font-family="Inter,Arial,sans-serif" font-size="16" font-weight="800">
-    <rect x="78" y="430" width="104" height="38" rx="19" fill="#D9F1ED"/>
-    <text x="104" y="455" fill="#0F766E">Prompt</text>
-    <rect x="194" y="430" width="156" height="38" rx="19" fill="#FBE7D9"/>
-    <text x="221" y="455" fill="#C2410C">Function Calling</text>
-    <rect x="362" y="430" width="72" height="38" rx="19" fill="#ECF2FF"/>
-    <text x="384" y="455" fill="#2556A3">RAG</text>
-    <rect x="446" y="430" width="102" height="38" rx="19" fill="#FFF7EA"/>
-    <text x="473" y="455" fill="#B7791F">Memory</text>
-    <rect x="78" y="484" width="78" height="38" rx="19" fill="#D9F1ED"/>
-    <text x="103" y="509" fill="#0F766E">MCP</text>
-    <rect x="168" y="484" width="80" height="38" rx="19" fill="#FBE7D9"/>
-    <text x="192" y="509" fill="#C2410C">Skill</text>
-    <rect x="260" y="484" width="112" height="38" rx="19" fill="#ECF2FF"/>
-    <text x="287" y="509" fill="#2556A3">Evaluate</text>
-    <rect x="384" y="484" width="106" height="38" rx="19" fill="#FFF7EA"/>
-    <text x="412" y="509" fill="#B7791F">Deploy</text>
+    <rect x="78" y="392" width="104" height="38" rx="19" fill="#D9F1ED"/>
+    <text x="104" y="417" fill="#0F766E">Prompt</text>
+    <rect x="194" y="392" width="156" height="38" rx="19" fill="#FBE7D9"/>
+    <text x="221" y="417" fill="#C2410C">Function Calling</text>
+    <rect x="362" y="392" width="72" height="38" rx="19" fill="#ECF2FF"/>
+    <text x="384" y="417" fill="#2556A3">RAG</text>
+    <rect x="446" y="392" width="102" height="38" rx="19" fill="#FFF7EA"/>
+    <text x="473" y="417" fill="#B7791F">Memory</text>
+    <rect x="78" y="446" width="78" height="38" rx="19" fill="#D9F1ED"/>
+    <text x="103" y="471" fill="#0F766E">MCP</text>
+    <rect x="168" y="446" width="80" height="38" rx="19" fill="#FBE7D9"/>
+    <text x="192" y="471" fill="#C2410C">Skill</text>
+    <rect x="260" y="446" width="112" height="38" rx="19" fill="#ECF2FF"/>
+    <text x="287" y="471" fill="#2556A3">Evaluate</text>
+    <rect x="384" y="446" width="106" height="38" rx="19" fill="#FFF7EA"/>
+    <text x="412" y="471" fill="#B7791F">Deploy</text>
   </g>
 
   <g font-family="Inter,Arial,sans-serif">
-    <rect x="774" y="92" width="326" height="260" rx="20" fill="#FFFDF8"/>
-    <text x="806" y="135" fill="#17202A" font-size="22" font-weight="900">L12 Graduation Project</text>
-    <text x="806" y="171" fill="#46515D" font-size="16">智能客服 Agent</text>
-    <rect x="806" y="206" width="248" height="22" rx="11" fill="#D9F1ED"/>
-    <rect x="806" y="244" width="198" height="22" rx="11" fill="#FBE7D9"/>
-    <rect x="806" y="282" width="276" height="22" rx="11" fill="#ECF2FF"/>
-    <text x="806" y="335" fill="#0F766E" font-size="16" font-weight="900">LangGraph · RAG · FastAPI · Eval</text>
-
-    <rect x="802" y="404" width="298" height="82" rx="16" fill="#101820" stroke="#30424D"/>
-    <text x="824" y="436" fill="#D9F1ED" font-size="15">$ python3 scripts/build_public_site.py</text>
-    <text x="824" y="465" fill="#F7C9B6" font-size="15">/studio/ · /showcase/</text>
+    <rect x="774" y="96" width="326" height="264" rx="20" fill="#FFFDF8"/>
+    <text x="806" y="139" fill="#17202A" font-size="22" font-weight="900">L12 Graduation Project</text>
+    <text x="806" y="174" fill="#46515D" font-size="16">智能客服 Agent</text>
+    <rect x="806" y="208" width="248" height="22" rx="11" fill="#D9F1ED"/>
+    <rect x="806" y="246" width="198" height="22" rx="11" fill="#FBE7D9"/>
+    <rect x="806" y="284" width="276" height="22" rx="11" fill="#ECF2FF"/>
+    <text x="806" y="337" fill="#0F766E" font-size="16" font-weight="900">LangGraph · RAG · FastAPI · Eval</text>
+    <path d="M858 422L912 388L960 428L1016 390" stroke="#D9F1ED" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="858" cy="422" r="14" fill="#FBE7D9"/>
+    <circle cx="912" cy="388" r="14" fill="#D9F1ED"/>
+    <circle cx="960" cy="428" r="14" fill="#ECF2FF"/>
+    <circle cx="1016" cy="390" r="14" fill="#FFF7EA"/>
+    <rect x="802" y="462" width="298" height="54" rx="16" fill="#101820" stroke="#30424D"/>
+    <text x="824" y="496" fill="#F7C9B6" font-size="15">/studio/ · /showcase/ · 12 lessons</text>
   </g>
 
-  <text x="78" y="558" fill="#A7B0B8" font-family="Inter,Arial,sans-serif" font-size="17">arvin-lucifer.github.io/AI_Agent_Studio</text>
+  <text x="78" y="552" fill="#A7B0B8" font-family="Inter,Arial,sans-serif" font-size="17">arvin-lucifer.github.io/AI_Agent_Studio</text>
 </svg>

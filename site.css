@@ -52,7 +52,7 @@ a {
   font-weight: 800;
 }
 
-.brand span {
+.brand-symbol {
   display: grid;
   place-items: center;
   width: 36px;
@@ -60,6 +60,12 @@ a {
   border-radius: 7px;
   background: var(--ink);
   color: #fffdf8;
+}
+
+.brand-symbol img {
+  width: 36px;
+  height: 36px;
+  display: block;
 }
 
 .site-nav nav {
